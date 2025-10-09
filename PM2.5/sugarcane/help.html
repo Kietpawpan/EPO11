@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สถานการณ์จำลอง: กลไกส่วนต่างราคาอ้อยสด-อ้อยเผา</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.8;
+            background-color: #f0f7ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #0077b6;
+            color: #ffffff;
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 5px solid #005a8d;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        
+        header p {
+            margin: 5px 0 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 40px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #005a8d;
+            border-left: 5px solid #0077b6;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+        
+        ol, ul {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        strong, .highlight-number {
+            color: #0077b6;
+            font-weight: 700;
+        }
+        
+        .final-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2a9d8f;
+        }
+        
+        .penalty-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e63946;
+        }
+        
+        .calculation {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        
+        .summary-box {
+            display: flex;
+            gap: 20px;
+            justify-content: space-around;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .summary-card {
+            flex: 1;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .summary-card.fresh {
+            background-color: #e7f5ff;
+            border: 1px solid #bde0fe;
+        }
+        
+        .summary-card.burnt {
+             background-color: #fff1f2;
+             border: 1px solid #ffc2c7;
+        }
+        
+        .highlight-box {
+            background-color: #e7f5ff;
+            border: 1px solid #bde0fe;
+            border-left: 5px solid #0077b6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .highlight-box .result-title {
+            font-size: 1.2em;
+            color: #005a8d;
+        }
+        
+        .highlight-box .final-result {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #0077b6;
+            margin: 10px 0;
+        }
+        
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>สถานการณ์จำลอง: กลไกส่วนต่างราคาอ้อยสด-อ้อยเผา</h1>
+            <p>Web Application แสดงกลไกจูงใจทางเศรษฐศาสตร์</p>
+        </header>
+
+        <main>
+            <div class="section">
+                <h2>สมมติฐาน (Input Parameters)</h2>
+                <ul>
+                    <li>โรงงานน้ำตาล A รับอ้อยเข้าหีบทั้งหมด: <strong class="highlight-number">1,000,000 ตัน</strong></li>
+                    <li>ราคารับซื้อพื้นฐาน (ก่อนหัก/เพิ่ม): <strong class="highlight-number">1,000 บาท/ตัน</strong></li>
+                    <li>ข้อตกลงใหม่: อัตราหักเงินอ้อยไฟไหม้ (ค่าปรับ): <strong class="highlight-number">200 บาท/ตัน</strong></li>
+                    <li>ผลลัพธ์ที่คาดหวัง:
+                        <ul>
+                            <li>อ้อยสด: <strong>80%</strong> (800,000 ตัน)</li>
+                            <li>อ้อยเผา: <strong>20%</strong> (200,000 ตัน)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>ขั้นตอนการคำนวณและผลลัพธ์</h2>
+                <ol>
+                    <li>
+                        <strong>การรวบรวมเงินค่าปรับจากอ้อยเผา</strong>
+                        <p>โรงงานหักเงินจากเกษตรกรที่ส่งอ้อยเผาทั้งหมดเพื่อนำเข้ากองกลาง</p>
+                        <div class="calculation">
+                            200,000 ตัน (อ้อยเผา) &times; 200 บาท/ตัน = <strong class="highlight-number">40,000,000 บาท</strong> (เงินในกองทุนค่าปรับ)
+                        </div>
+                    </li>
+                    <li>
+                        <strong>การกระจายเงินเพิ่มพิเศษ (Premium) ให้เกษตรกรอ้อยสด</strong>
+                        <p>นำเงินจากกองทุนค่าปรับทั้งหมด มาเฉลี่ยจ่ายคืนให้เฉพาะเกษตรกรที่ส่งอ้อยสด</p>
+                         <div class="calculation">
+                           40,000,000 บาท &divide; 800,000 ตัน (อ้อยสด) = <strong class="highlight-number">50 บาท/ตัน</strong> (เงินเพิ่มพิเศษ)
+                        </div>
+                    </li>
+                </ol>
+            </div>
+            
+            <div class="section">
+                <h2>สรุปราคาที่เกษตรกรแต่ละกลุ่มจะได้รับ (ราคาสุทธิ)</h2>
+                <div class="summary-box">
+                    <div class="summary-card burnt">
+                        <h3>เกษตรกรอ้อยเผา</h3>
+                        <p>1,000 บาท - 200 บาท</p>
+                        <p class="penalty-price">ได้รับสุทธิ 800 บาท/ตัน</p>
+                    </div>
+                    <div class="summary-card fresh">
+                         <h3>เกษตรกรอ้อยสด</h3>
+                        <p>1,000 บาท + 50 บาท</p>
+                        <p class="final-price">ได้รับสุทธิ 1,050 บาท/ตัน</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>ผลลัพธ์สุดท้ายที่เกิดขึ้นจริง</h2>
+                 <div class="highlight-box">
+                    <p class="result-title">ส่วนต่างราคาระหว่างอ้อยสดและอ้อยเผา</p>
+                    <p class="final-result">250 บาท/ตัน</p>
+                    <p>กลไกนี้สามารถสร้างส่วนต่างของราคาได้สูงกว่าเป้าหมาย (200 บาท/ตัน) และกลายเป็นแรงจูงใจทางเศรษฐกิจที่ทรงพลังมากพอที่จะเปลี่ยนพฤติกรรมของเกษตรกรได้</p>
+                </div>
+            </div>
+            
+             <div class="section">
+                <h2>ข้อดีของกลไกนี้</h2>
+                <ul>
+                    <li><strong>สร้างแรงจูงใจชัดเจน:</strong> เกษตรกรเห็นตัวเลขส่วนต่างที่คุ้มค่ากับการลงทุนลงแรงตัดอ้อยสด</li>
+                    <li><strong>เป็นกลไกที่ยั่งยืน:</strong> ระบบสามารถเลี้ยงตัวเองได้โดยไม่ต้องใช้งบประมาณภาครัฐมาอุดหนุน</li>
+                    <li><strong>เกิดแรงกดดันทางสังคม:</strong> เกษตรกรที่เผาอ้อยทราบว่าเงินค่าปรับของตนเองถูกนำไปจ่ายให้เพื่อนเกษตรกรที่ตัดอ้อยสด</li>
+                </ul>
+            </div>
+        </main>
+        <a href="cane2.5.html"><< BACK</a>
+        <footer>
+            <p>&copy; 2025 Monte Kietpawpan | Web App Simulation Example | Economic Instruments for Environmental Management</p>
+        </footer>
+    </div>
+
+</body>
+</html>

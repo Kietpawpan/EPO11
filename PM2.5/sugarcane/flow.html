@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Chart: กลไกส่วนต่างราคาอ้อย</title>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif; /* แนะนำให้ใช้ฟอนต์ที่รองรับภาษาไทย */
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .flowchart-container {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+        }
+        .flow-block {
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            max-width: 400px;
+            position: relative;
+        }
+        .flow-block.decision {
+            background-color: #e3f2fd;
+            border-color: #90caf9;
+        }
+        .flow-block.process {
+            background-color: #e8f5e9;
+            border-color: #a5d6a7;
+        }
+        .flow-block.io {
+            background-color: #fffde7;
+            border-color: #fff59d;
+        }
+        .flow-block.start-end {
+            background-color: #f3e5f5;
+            border-color: #ce93d8;
+            font-weight: bold;
+        }
+        .arrow {
+            font-size: 24px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+        .stakeholders {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .stakeholder-block {
+            background-color: #fff;
+            border: 1px dashed #aaa;
+            border-radius: 5px;
+            padding: 10px;
+            flex-grow: 1;
+        }
+        h1 {
+            color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="flowchart-container">
+    <h1>Flow Chart: กลไกการจัดทำข้อตกลงส่วนต่างราคาอ้อย</h1>
+
+    <div class="flow-block start-end">เริ่มต้น: กำหนดเป้าหมายลดอ้อยเผา</div>
+    <div class="arrow">↓</div>
+
+    <div class="flow-block decision">จัดตั้งเวทีเจรจาอย่างเป็นทางการ</div>
+    <div class="arrow">↓</div>
+
+    <div class="flow-block">เชิญผู้มีส่วนได้ส่วนเสียเข้าร่วม</div>
+    <div class="stakeholders">
+        <div class="stakeholder-block">1. สมาคมชาวไร่อ้อย</div>
+        <div class="stakeholder-block">2. โรงงานน้ำตาล</div>
+        <div class="stakeholder-block">3. หน่วยงานรัฐ (คนกลาง)</div>
+    </div>
+    
+    <div class="arrow">↓</div>
+
+    <div class="flow-block process">
+        <strong>ออกแบบกลไกทางการเงินและข้อตกลง</strong><br>
+        - กำหนดส่วนต่างราคาเป้าหมาย (ขั้นต่ำ 200 บ./ตัน)<br>
+        - กำหนดอัตรา "ค่าปรับอ้อยเผา" ให้สูงขึ้น
+    </div>
+    <div class="arrow">↓</div>
+
+    <div class="flow-block process">
+        <strong>ออกแบบกลไกการกระจายเงินค่าปรับ</strong>
+    </div>
+    <div class="arrow">↓</div>
+
+    <div class="flow-block io">โรงงานหักเงินค่าปรับจากเกษตรกรที่ส่งอ้อยเผา</div>
+    <div class="arrow">↓</div>
+
+    <div class="flow-block io">รวบรวมเงินค่าปรับทั้งหมดเข้าสู่ "กองกลาง"</div>
+    <div class="arrow">↓</div>
+
+    <div class="flow-block io">เฉลี่ยจ่ายเงินจากกองกลางทั้งหมด คืนให้เฉพาะเกษตรกรที่ส่ง "อ้อยสด" เท่านั้น (เป็นเงินเพิ่มพิเศษ/Premium)</div>
+    <div class="arrow">↓</div>
+    
+    <div class="flow-block decision">สรุปและจัดทำข้อตกลงร่วมกันเป็นลายลักษณ์อักษร</div>
+    <div class="arrow">↓</div>
+
+    <div class="flow-block start-end">บังคับใช้และติดตามประเมินผลในฤดูการผลิต</div>
+
+</div>
+
+</body>
+</html>

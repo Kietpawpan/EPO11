@@ -1,0 +1,142 @@
+body {
+    font-family: 'Sarabun', sans-serif; /* ใช้ฟอนต์ที่รองรับภาษาไทย */
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+h1, h2, h3 {
+    color: #0056b3;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-group input[type="number"],
+.input-group input[type="range"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.slider-group {
+    position: relative;
+}
+
+#freshCanePercentValue {
+    text-align: center;
+    display: block;
+    margin-top: 5px;
+    font-weight: bold;
+    color: #0056b3;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.results-container {
+    margin-top: 30px;
+    border-top: 2px solid #eee;
+    padding-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.result-item p:first-child {
+    font-weight: normal;
+    color: #555;
+}
+
+.result-item p:last-child {
+    font-weight: bold;
+}
+
+.price-result h3:last-child {
+    color: #28a745;
+}
+
+.price-result:nth-of-type(2) h3:last-child {
+     color: #dc3545;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
+
+.final-diff {
+    background-color: #e9f5ff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.final-diff h2 {
+    margin: 0;
+    color: #007bff;
+}
+
+.final-diff span {
+    font-size: 1.5em;
+}
