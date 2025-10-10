@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบจำลองพยากรณ์ PM2.5 นครราชสีมา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f0f4f8;
+        }
+        /* Custom slider styles */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-top: -6px;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .result-card {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600">แบบจำลองพยากรณ์ค่าฝุ่น PM2.5</h1>
+            <p class="text-lg text-gray-600 mt-2">กรณีศึกษา: จังหวัดนครราชสีมา (อ้างอิงจาก<a href="PM25TheoryKorat.pdf">กรอบทฤษฎี</a>)</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Panel -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <h2 class="text-2xl font-semibold mb-6 border-b pb-3 text-gray-700">ระบุปัจจัยสภาพแวดล้อม</h2>
+                
+                <form id="pm25-form">
+                    <!-- Meteorological Factors -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-blue-500 mb-3">ปัจจัยทางอุตุนิยมวิทยา</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="wind-speed" class="block mb-1 font-medium">ความเร็วลม (กม./ชม.)</label>
+                                <div class="flex items-center space-x-4">
+                                    <input type="range" id="wind-speed" min="0" max="50" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                    <span id="wind-speed-value" class="font-bold text-blue-600 w-12 text-center">10</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">ลมแรงช่วยพัดพาฝุ่น (ค่า PM2.5 ลดลง)</p>
+                            </div>
+                            <div>
+                                <label for="rainfall" class="block mb-1 font-medium">ปริมาณน้ำฝน (มม./ชม.)</label>
+                                <div class="flex items-center space-x-4">
+                                    <input type="range" id="rainfall" min="0" max="10" value="0" step="0.5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                    <span id="rainfall-value" class="font-bold text-blue-600 w-12 text-center">0</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">ฝนช่วยชะล้างฝุ่น (ค่า PM2.5 ลดลงอย่างมาก)</p>
+                            </div>
+                            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                <label for="inversion" class="font-medium">สภาวะอุณหภูมิผกผัน (อากาศปิด)</label>
+                                <input type="checkbox" id="inversion" class="h-6 w-6 rounded-md text-blue-600 focus:ring-blue-500 border-gray-300">
+                            </div>
+                             <p class="text-xs text-gray-500 -mt-3 pl-1">อากาศปิดกักฝุ่นไว้ (ค่า PM2.5 เพิ่มสูงขึ้น)</p>
+                        </div>
+                    </div>
+
+                    <!-- Source Factors -->
+                    <div class="mb-4">
+                        <h3 class="text-lg font-medium text-red-500 mb-3">ปัจจัยจากแหล่งกำเนิด (ในพื้นที่)</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="burning" class="block mb-1 font-medium">การเผาในภาคเกษตร (ไร่อ้อย)</label>
+                                <select id="burning" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500">
+                                    <option value="0">ไม่มีการเผา</option>
+                                    <option value="1">เผาน้อย</option>
+                                    <option value="2" selected>เผาปานกลาง</option>
+                                    <option value="3">เผามาก</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="traffic" class="block mb-1 font-medium">ปริมาณการจราจร (ถ.มิตรภาพ)</label>
+                                <select id="traffic" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500">
+                                    <option value="0">น้อย (นอกเวลาเร่งด่วน)</option>
+                                    <option value="1" selected>ปกติ</option>
+                                    <option value="2">หนาแน่น (ชั่วโมงเร่งด่วน)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Result Panel -->
+            <div class="flex flex-col space-y-8">
+                <div id="result-card" class="result-card bg-white p-6 rounded-2xl shadow-lg text-center border-t-8 border-green-500">
+                    <h2 class="text-2xl font-semibold mb-2 text-gray-700">ผลการพยากรณ์ค่า PM2.5</h2>
+                    <p class="text-7xl font-bold my-4" id="pm25-result">37</p>
+                    <p class="text-2xl font-medium" id="aqi-level">คุณภาพอากาศดี</p>
+                    <p class="text-sm text-gray-500">(ไมโครกรัมต่อลูกบาศก์เมตร)</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                     <h3 class="text-xl font-semibold mb-3 text-gray-700">คำแนะนำด้านสุขภาพ</h3>
+                     <div id="health-recommendation" class="text-gray-600">
+                        <p>ประชาชนทั่วไปสามารถทำกิจกรรมกลางแจ้งได้ตามปกติ</p>
+                     </div>
+                </div>
+
+                <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-4 rounded-r-lg">
+                    <p class="font-bold">ข้อจำกัดของแบบจำลอง</p>
+                    <p class="text-sm">แอปพลิเคชันนี้เป็นเครื่องมือเพื่อการศึกษา สร้างขึ้นจากความสัมพันธ์เชิงทฤษฎี ไม่ใช่ข้อมูลจริงแบบเรียลไทม์ ค่าที่ได้เป็นเพียงการประมาณการเพื่อแสดงให้เห็นอิทธิพลของปัจจัยต่างๆ เท่านั้น</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const form = document.getElementById('pm25-form');
+        const windSpeedSlider = document.getElementById('wind-speed');
+        const windSpeedValue = document.getElementById('wind-speed-value');
+        const rainfallSlider = document.getElementById('rainfall');
+        const rainfallValue = document.getElementById('rainfall-value');
+        const inversionCheckbox = document.getElementById('inversion');
+        const burningSelect = document.getElementById('burning');
+        const trafficSelect = document.getElementById('traffic');
+
+        const pm25ResultEl = document.getElementById('pm25-result');
+        const aqiLevelEl = document.getElementById('aqi-level');
+        const resultCardEl = document.getElementById('result-card');
+        const healthRecommendationEl = document.getElementById('health-recommendation');
+        
+        // AQI Standard (Thailand)
+        const aqiStandard = [
+            { value: 25, level: 'คุณภาพอากาศดีมาก', color: 'blue', recommendation: 'ประชาชนทั่วไปสามารถทำกิจกรรมกลางแจ้งได้ตามปกติ' },
+            { value: 37, level: 'คุณภาพอากาศดี', color: 'green', recommendation: 'ประชาชนทั่วไปสามารถทำกิจกรรมกลางแจ้งได้ตามปกติ' },
+            { value: 50, level: 'คุณภาพอากาศปานกลาง', color: 'yellow', recommendation: 'ประชาชนทั่วไป: สามารถทำกิจกรรมกลางแจ้งได้ตามปกติ กลุ่มเสี่ยง: ควรเฝ้าระวังสุขภาพ' },
+            { value: 90, level: 'เริ่มมีผลกระทบต่อสุขภาพ', color: 'orange', recommendation: 'ประชาชนทั่วไป: ควรจำกัดระยะเวลาในการทำกิจกรรมกลางแจ้ง กลุ่มเสี่ยง: ควรลดระยะเวลาในการทำกิจกรรมกลางแจ้ง' },
+            { value: Infinity, level: 'มีผลกระทบต่อสุขภาพ', color: 'red', recommendation: 'ประชาชนทั่วไปและกลุ่มเสี่ยง: ควรงดกิจกรรมกลางแจ้ง และใช้อุปกรณ์ป้องกันตนเองหากมีความจำเป็น' }
+        ];
+
+        const colorMap = {
+            blue: { text: 'text-blue-500', border: 'border-blue-500' },
+            green: { text: 'text-green-500', border: 'border-green-500' },
+            yellow: { text: 'text-yellow-500', border: 'border-yellow-500' },
+            orange: { text: 'text-orange-500', border: 'border-orange-500' },
+            red: { text: 'text-red-600', border: 'border-red-600' },
+        };
+
+        function calculatePM25() {
+            // Get values from inputs
+            const wind = parseFloat(windSpeedSlider.value);
+            const rain = parseFloat(rainfallSlider.value);
+            const inversion = inversionCheckbox.checked;
+            const burning = parseInt(burningSelect.value);
+            const traffic = parseInt(trafficSelect.value);
+
+            // Base PM2.5 value for a typical day in an urban area
+            let basePM25 = 15;
+
+            // --- Apply factors based on the research paper ---
+            
+            // Meteorological effects
+            let windEffect = -0.7 * wind; // Negative correlation: higher wind -> lower PM2.5
+            let rainEffect = -20 * rain; // Strong negative correlation: rain washes out pollutants
+            let inversionEffect = inversion ? 35 : 0; // Huge positive correlation: traps pollutants
+
+            // Source effects (Korat specific)
+            let burningEffect = burning * 20; // Major seasonal source
+            let trafficEffect = traffic * 8; // Constant urban source
+
+            // Calculate final PM2.5
+            let totalPM25 = basePM25 + windEffect + rainEffect + inversionEffect + burningEffect + trafficEffect;
+
+            // Ensure PM2.5 is not negative
+            totalPM25 = Math.max(0, totalPM25);
+            
+            updateUI(Math.round(totalPM25));
+        }
+
+        function updateUI(pm25Value) {
+            let aqiInfo = aqiStandard.find(level => pm25Value <= level.value);
+
+            pm25ResultEl.textContent = pm25Value;
+            aqiLevelEl.textContent = aqiInfo.level;
+            healthRecommendationEl.innerHTML = `<p>${aqiInfo.recommendation.replace(' กลุ่มเสี่ยง:', '</p><p><b>กลุ่มเสี่ยง:</b>')}</p>`;
+            
+            // Remove previous color classes
+            Object.values(colorMap).forEach(colors => {
+                pm25ResultEl.classList.remove(colors.text);
+                aqiLevelEl.classList.remove(colors.text);
+                resultCardEl.classList.remove(colors.border);
+            });
+            
+            // Add new color classes
+            const newColors = colorMap[aqiInfo.color];
+            pm25ResultEl.classList.add(newColors.text);
+            aqiLevelEl.classList.add(newColors.text);
+            resultCardEl.classList.add(newColors.border);
+        }
+
+        // Event Listeners
+        windSpeedSlider.addEventListener('input', (e) => {
+            windSpeedValue.textContent = e.target.value;
+            calculatePM25();
+        });
+
+        rainfallSlider.addEventListener('input', (e) => {
+            rainfallValue.textContent = e.target.value;
+            calculatePM25();
+        });
+
+        // Listen for changes on all form elements
+        form.addEventListener('change', calculatePM25);
+
+        // Initial calculation on page load
+        document.addEventListener('DOMContentLoaded', calculatePM25);
+    </script>
+
+</body>
+</html>
