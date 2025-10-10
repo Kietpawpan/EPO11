@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การคำนวณค่า PM2.5 ใน Web Application</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.8;
+            background-color: #f0f7ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #0077b6;
+            color: #ffffff;
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 5px solid #005a8d;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        
+        header p {
+            margin: 5px 0 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 40px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            color: #005a8d;
+            border-left: 5px solid #0077b6;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+        
+        ol, ul {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        strong {
+            color: #0077b6;
+            font-weight: 700;
+        }
+        
+        .highlight-box {
+            background-color: #e7f5ff;
+            border: 1px solid #bde0fe;
+            border-left: 5px solid #0077b6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+         .highlight-box h3 {
+            margin-top: 0;
+            color: #005a8d;
+        }
+        
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        sub {
+            font-size: 0.8em;
+        }
+        
+        code, .code-block {
+            font-family: 'Fira Code', monospace;
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #333;
+        }
+        
+        .code-block {
+            display: block;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Web Application: การคำนวณค่า PM<sub>2.5</sub></h1>
+            <p>ขั้นตอนการทำงานโดยละเอียดของฟังก์ชัน JavaScript <code>calculatePM25()</code></p>
+        </header>
+
+        <main>
+            <ol>
+                <li>
+                    <strong>เริ่มต้นด้วยค่าฝุ่นพื้นฐาน (Base Value)</strong>
+                    <p>การคำนวณจะเริ่มต้นจากค่าฝุ่นพื้นฐานที่ 15 µg/m³ ซึ่งเปรียบเสมือนปริมาณฝุ่นในวันปกติของพื้นที่เมือง ที่ยังไม่มีปัจจัยรุนแรงอื่นๆ เข้ามาเกี่ยวข้อง</p>
+                    <div class="code-block">let basePM25 = 15;</div>
+                </li>
+                
+                <li>
+                    <strong>นำค่าจากผู้ใช้มาคำนวณผลกระทบ (Effect Calculation)</strong>
+                    <p>สคริปต์จะดึงค่าที่ผู้ใช้ปรับจากฟอร์มทั้งหมด แล้วนำมาคำนวณ "ผลกระทบ" ของแต่ละปัจจัย เพื่อนำไปบวกหรือลบกับค่าพื้นฐาน</p>
+                    <ul>
+                        <li>
+                            <strong>ความเร็วลม (Wind Effect):</strong>
+                            <div class="code-block">let windEffect = -0.7 * wind;</div>
+                             <p>เป็นความสัมพันธ์แบบ <strong>"ผกผัน"</strong> (ค่าเป็นลบ) หมายความว่า ยิ่งลมแรง ค่าฝุ่นยิ่งลดลง เพราะลมช่วยพัดพาฝุ่นให้กระจายตัว</p>
+                        </li>
+                        <li>
+                            <strong>ปริมาณน้ำฝน (Rain Effect):</strong>
+                            <div class="code-block">let rainEffect = -20 * rain;</div>
+                            <p>เป็นความสัมพันธ์แบบ <strong>"ผกผัน" ที่รุนแรงมาก</strong> (ตัวคูณสูงถึง -20) เพราะฝนมีประสิทธิภาพสูงในการชะล้างฝุ่นละอองออกจากอากาศ</p>
+                        </li>
+                         <li>
+                            <strong>สภาวะอุณหภูมิผกผัน (Inversion Effect):</strong>
+                            <div class="code-block">let inversionEffect = inversion ? 35 : 0;</div>
+                             <p>เป็นการตรวจสอบเงื่อนไข ถ้าผู้ใช้ติ๊กช่อง "อากาศปิด" (<code>inversion</code> เป็น true) จะบวกค่าฝุ่นเพิ่มขึ้นทันที <strong>35 µg/m³</strong> เพราะสภาวะนี้จะกดอากาศและกักฝุ่นไว้ แต่ถ้าไม่ติ๊ก ก็จะไม่มีผลกระทบ (เป็น 0)</p>
+                        </li>
+                         <li>
+                            <strong>การเผาในภาคเกษตร (Burning Effect):</strong>
+                            <div class="code-block">let burningEffect = burning * 20;</div>
+                             <p>เป็นความสัมพันธ์แบบ <strong>"โดยตรง"</strong> (ค่าเป็นบวก) ยิ่งระดับการเผาสูง ค่าฝุ่นยิ่งเพิ่มขึ้นมาก เพราะเป็นแหล่งกำเนิดฝุ่นโดยตรง ตัวคูณที่สูง (20) สะท้อนว่าเป็นปัจจัยหลักที่ก่อให้เกิดมลพิษสูง</p>
+                        </li>
+                        <li>
+                            <strong>ปริมาณการจราจร (Traffic Effect):</strong>
+                             <div class="code-block">let trafficEffect = traffic * 8;</div>
+                             <p>เป็นความสัมพันธ์แบบ <strong>"โดยตรง"</strong> เช่นกัน ยิ่งการจราจรหนาแน่น ค่าฝุ่นยิ่งเพิ่มขึ้น ซึ่งเป็นแหล่งกำเนิดฝุ่นที่สำคัญในเขตเมือง</p>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li>
+                    <strong>รวมผลลัพธ์ทั้งหมด</strong>
+                    <p>นำค่าพื้นฐานมาบวกรวมกับผลกระทบของทุกปัจจัย (ซึ่งบางค่าก็เป็นค่าลบ)</p>
+                    <div class="code-block">let totalPM25 = basePM25 + windEffect + rainEffect + inversionEffect + burningEffect + trafficEffect;</div>
+                </li>
+                
+                <li>
+                    <strong>ปรับค่าสุดท้ายและแสดงผล</strong>
+                    <p>เนื่องจากค่าฝุ่นไม่สามารถติดลบได้ จึงมีการตรวจสอบเพื่อให้แน่ใจว่าค่าต่ำสุดคือ 0 จากนั้นจึงปัดเศษให้เป็นจำนวนเต็ม และส่งค่าที่คำนวณได้ไปอัปเดตตัวเลข, ระดับคุณภาพอากาศ, และคำแนะนำบนหน้าเว็บ</p>
+                </li>
+            </ol>
+            
+             <div class="highlight-box">
+                <h3>สรุป</h3>
+                <p>แบบจำลองนี้ใช้ <strong>"สมการเชิงเส้นอย่างง่าย"</strong> โดยมีค่าเริ่มต้น แล้วปรับเพิ่ม-ลดตามความรุนแรงของแต่ละปัจจัยที่เราป้อนเข้าไป เพื่อจำลองให้เห็นว่าปัจจัยใดมีอิทธิพลต่อค่าฝุ่น PM<sub>2.5</sub> มากน้อยเพียงใด</p>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Web Application Technical Documentation</p>
+        </footer>
+    </div>
+
+</body>
+</html>
