@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard PM2.5 รายวัน</title>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f9;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        p {
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>ค่าฝุ่น PM2.5 รายวัน</h1>
+        <p>ข้อมูลรายวัน เริ่ม 10 ตุลาคม 2568</p>
+        <canvas id="pm25Chart"></canvas>
+    </div>
+
+    <script>
+        // === 1. เตรียมข้อมูล (Data Preparation) ===
+        // ข้อมูล PM2.5 (หน่วย: มคก./ลบ.ม.)
+        const nakhonRatchasimaData = [15.1];
+        const chaiyaphumData = [10.9];
+        const buriRamData = [8.0];
+        const surinData = [10.5];
+        
+        // ป้ายกำกับแกน X (วันที่) - แก้ไขจุดนี้
+        const chartLabels = [];
+        for (let i = 10; i <= 31; i++) {
+            // แก้จาก '1${i}' เป็น '${i}' เพื่อให้เริ่มนับจาก 1, 2, 3...
+            chartLabels.push(`${i} ต.ค. 68`);
+        }
+
+        // === 2. ตั้งค่าการแสดงผลกราฟ (Chart Configuration) ===
+        const data = {
+            labels: chartLabels,
+            datasets: [
+                {
+                    label: 'นครราชสีมา',
+                    data: nakhonRatchasimaData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                },
+                {
+                    label: 'ชัยภูมิ',
+                    data: chaiyaphumData,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                },
+                {
+                    label: 'บุรีรัมย์',
+                    data: buriRamData,
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                },
+                {
+                    label: 'สุรินทร์',
+                    data: surinData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                }
+            ]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'กราฟเปรียบเทียบค่า PM2.5 (μg/m³)'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'วันที่'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'ค่า PM2.5 (μg/m³)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // === 3. สร้างและแสดงผลกราฟ (Chart Rendering) ===
+        const ctx = document.getElementById('pm25Chart').getContext('2d');
+        const pm25Chart = new Chart(ctx, config);
+    </script>
+<center><a href="PM25Model.html">Model</a>
+</body>
+</html>
