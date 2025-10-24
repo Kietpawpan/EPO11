@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คู่มือปฏิบัติงาน: การเก็บตัวอย่างและวิเคราะห์องค์ประกอบขยะมูลฝอย</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #28a745;
+            --accent-color: #6f42c1; /* A distinct purple for technical focus */
+            --text-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.8;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 25px rgba(0,0,0,0.08);
+        }
+
+        /* --- Header --- */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #007bff);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.6em;
+            font-weight: 800;
+        }
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px 40px;
+        }
+
+        .introduction {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+        }
+
+        /* --- Vertical Timeline for Process Steps --- */
+        .process-timeline {
+            position: relative;
+            padding-left: 50px;
+            border-left: 4px solid #e9ecef;
+        }
+
+        .step {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            left: -75px;
+            top: -5px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: 700;
+            border: 5px solid #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .step h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0 0 10px;
+        }
+
+        .step p, .step ul {
+            font-size: 1.1em;
+            color: #495057;
+        }
+        .step ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .step ul li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+        .step ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        /* --- Technical Focus Box --- */
+        .technical-focus {
+            margin: 30px 0;
+            padding: 25px;
+            background-color: #f3eef9;
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+        }
+        .technical-focus h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: var(--accent-color);
+            text-align: center;
+        }
+        .technical-focus ol {
+            padding-left: 30px;
+        }
+        
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1>คู่มือปฏิบัติงานภาคสนาม</h1>
+            <p>การเก็บตัวอย่างและวิเคราะห์องค์ประกอบขยะมูลฝอยตามหลักวิชาการ</p>
+        </header>
+
+        <main class="content">
+            <div class="introduction">
+                <p>คู่มือนี้จัดทำขึ้นเพื่อกำหนดมาตรฐานการปฏิบัติงานให้แก่ทีมสำรวจของ สคพ.11 เพื่อให้การเก็บข้อมูลองค์ประกอบขยะมูลฝอยมีความถูกต้อง แม่นยำ และเป็นที่ยอมรับตามหลักวิชาการ สามารถนำไปใช้เป็นข้อมูลฐาน (Baseline Data) ของโครงการได้อย่างน่าเชื่อถือ</p>
+            </div>
+
+            <div class="process-timeline">
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h2>การเตรียมการก่อนลงพื้นที่ (Preparation)</h2>
+                    <p>การวางแผนที่ดีคือหัวใจของความสำเร็จ</p>
+                    <ul>
+                        <li><strong>ทีมงาน:</strong> จัดทีมปฏิบัติงานอย่างน้อย 4-5 คน กำหนดบทบาทชัดเจน (หัวหน้าทีม, ผู้เก็บตัวอย่าง, ผู้คัดแยก, ผู้ชั่งน้ำหนักและจดบันทึก)</li>
+                        <li><strong>อุปกรณ์ป้องกัน (PPE):</strong> ถุงมือหนา, รองเท้าบู๊ทนิรภัย, แว่นตา, ผ้าปิดจมูก, ชุดกันเปื้อน (ต้องสวมใส่ตลอดเวลา)</li>
+                        <li><strong>เครื่องมือและวัสดุ:</strong> พลั่ว, ขอเกี่ยว, ผ้าใบกันน้ำ (ขนาด 4x4 ม.), กรวยพลาสติกสำหรับสุ่มตัวอย่าง, ถัง/ภาชนะสำหรับคัดแยกขยะ (ตามจำนวนองค์ประกอบ), เครื่องชั่งน้ำหนัก (ความละเอียด 0.1 กก.), ป้ายระบุประเภทขยะ, แบบฟอร์มบันทึกข้อมูล, กล้องถ่ายรูป</li>
+                        <li><strong>การประสานงาน:</strong> แจ้งกำหนดการและขอความร่วมมือจากผู้ดูแลสถานที่กำจัดขยะมูลฝอยล่วงหน้า</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h2>การเก็บตัวอย่างขยะ (Sampling)</h2>
+                    <p>เพื่อให้ตัวอย่างเป็นตัวแทนที่ดีของขยะทั้งหมด</p>
+                    <ul>
+                        <li><strong>เลือกพื้นที่:</strong> เลือกจุดที่จะเก็บตัวอย่างจากกองขยะที่ "มาใหม่" ในวันนั้น เพื่อให้สะท้อนถึงขยะที่เกิดขึ้นจริงในปัจจุบัน</li>
+                        <li><strong>เก็บตัวอย่างเบื้องต้น:</strong> ใช้พลั่วตักขยะจาก 5 จุด (4 มุม และตรงกลาง) ของกองขยะที่เลือก นำมากองรวมกันบนผ้าใบให้ได้น้ำหนักรวมประมาณ 400-500 กิโลกรัม</li>
+                        <li><strong>ลดขนาดตัวอย่าง (Sample Reduction):</strong> ใช้ **"วิธีคลุกเคล้าและกองเป็นรูปกรวยสี่ส่วน" (Coning and Quartering Method)** ซึ่งเป็นวิธีมาตรฐานสากล เพื่อลดขนาดตัวอย่างให้เหลือประมาณ 100-200 กิโลกรัม</li>
+                    </ul>
+
+                    <div class="technical-focus">
+                        <h3>เทคนิคสำคัญ: วิธี Coning and Quartering</h3>
+                        <ol>
+                            <li><strong>คลุกเคล้า (Mix):</strong> ใช้พลั่วคลุกเคล้ากองขยะบนผ้าใบให้เข้ากันอย่างทั่วถึง</li>
+                            <li><strong>ทำเป็นกองกรวย (Cone):</strong> โกยขยะขึ้นเป็นรูปกรวยสมมาตร</li>
+                            <li><strong>ทำให้แบน (Flatten):</strong> กดส่วนยอดของกรวยลงให้แบนเป็นรูปวงกลมที่มีความหนาสม่ำเสมอ</li>
+                            <li><strong>แบ่งสี่ส่วน (Quarter):</strong> ลากเส้นแบ่งกองขยะออกเป็น 4 ส่วนเท่าๆ กัน</li>
+                            <li><strong>เก็บสองส่วนตรงข้าม (Select):</strong> เลือกเก็บตัวอย่างไว้ 2 ส่วนที่อยู่ตรงข้ามกัน และกำจัดอีก 2 ส่วนทิ้งไป</li>
+                            <li><strong>ทำซ้ำ (Repeat):</strong> นำขยะ 2 ส่วนที่เก็บไว้มาทำซ้ำขั้นตอนที่ 1-5 จนได้ตัวอย่างสุดท้ายที่มีน้ำหนักประมาณ 100-200 กิโลกรัม</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h2>การคัดแยกและวิเคราะห์องค์ประกอบ (Sorting & Analysis)</h2>
+                    <p>หัวใจของการสำรวจเพื่อหาข้อมูลเชิงปริมาณ</p>
+                    <ul>
+                        <li><strong>ชั่งน้ำหนักรวม:</strong> นำขยะตัวอย่างสุดท้ายที่ได้จากขั้นตอนที่ 2 มาชั่งน้ำหนักรวมทั้งหมด (Total Weight) และบันทึกค่า</li>
+                        <li><strong>คัดแยกองค์ประกอบ:</strong> เทขยะตัวอย่างลงบนผ้าใบที่สะอาด แล้วทำการคัดแยกขยะตามองค์ประกอบที่กำหนดไว้ ใส่ในภาชนะที่เตรียมไว้และติดป้ายให้ชัดเจน</li>
+                        <li><strong>องค์ประกอบขยะ (ตัวอย่าง):</strong> ขยะอินทรีย์/เศษอาหาร, พลาสติกรวม (หรือแยกย่อยเป็น PET, HDPE, ถุง), กระดาษ, แก้ว, โลหะ, สิ่งทอ, ขยะอันตราย, ขยะอื่นๆ</li>
+                        <li><strong>ชั่งน้ำหนักแต่ละองค์ประกอบ:</strong> นำขยะแต่ละองค์ประกอบที่แยกได้ไปชั่งน้ำหนักและบันทึกค่าลงในแบบฟอร์ม</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h2>การคำนวณและสรุปผล (Data Processing)</h2>
+                    <p>เปลี่ยนข้อมูลดิบให้เป็นข้อมูลที่พร้อมใช้งาน</p>
+                    <ul>
+                        <li><strong>ตรวจสอบข้อมูล:</strong> รวมน้ำหนักของขยะทุกองค์ประกอบที่แยกได้ ควรมีค่าใกล้เคียงกับน้ำหนักรวมที่ชั่งไว้ในตอนแรก (ค่าผิดพลาดไม่ควรเกิน 5%)</li>
+                        <li><strong>คำนวณร้อยละ:</strong> คำนวณสัดส่วนของขยะแต่ละองค์ประกอบเป็นร้อยละโดยน้ำหนัก จากสูตร:<br>
+                            <em>% องค์ประกอบ = (น้ำหนักขยะองค์ประกอบนั้น / น้ำหนักขยะตัวอย่างรวม) x 100</em></li>
+                        <li><strong>สรุปและจัดทำรายงาน:</strong> จัดทำรายงานสรุปผลการวิเคราะห์องค์ประกอบขยะในรูปแบบตารางและแผนภูมิวงกลม พร้อมแนบภาพถ่ายการปฏิบัติงานทุกขั้นตอน</li>
+                    </ul>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>คู่มือฉบับนี้จัดทำโดย สำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11 (นครราชสีมา)</p>
+        </footer>
+    </div>
+
+</body>
+</html>

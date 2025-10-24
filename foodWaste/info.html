@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: นครชัยบุรินทร์ กินหมดจาน ลดโลกร้อน (ปรับปรุง)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&family=Prompt:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-bg: #e0f2f7; /* Light Blue background */
+            --primary-color: #007bff; /* Blue */
+            --secondary-color: #28a745; /* Green */
+            --accent-color: #ffc107; /* Yellow */
+            --text-dark: #343a40;
+            --text-light: #6c757d;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .infographic-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header / Title Section --- */
+        .infographic-header {
+            background: linear-gradient(135deg, var(--primary-color), #0056b3);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            font-family: 'Prompt', sans-serif;
+        }
+        .infographic-header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .infographic-header p {
+            margin: 10px 0 0;
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        /* --- Main Content Grid --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 30px;
+        }
+
+        .grid-item {
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--secondary-color);
+            display: flex;
+            flex-direction: column;
+            
+            /* === KEY CHANGE HERE: Align content to the left === */
+            align-items: flex-start; /* Aligns icon/title to the left */
+            text-align: left;      /* Aligns all text to the left */
+        }
+
+        .grid-item.full-width {
+            grid-column: 1 / -1;
+            background-color: #fffde7;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .item-icon {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .grid-item.full-width .item-icon {
+            font-size: 3.5em;
+            color: var(--accent-color);
+        }
+
+        .item-title {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-family: 'Prompt', sans-serif;
+        }
+        .item-text {
+            font-size: 1.05em;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* --- Statistics / Highlight Section --- */
+        .stats-section {
+            background-color: #e6ffed;
+            padding: 30px;
+            text-align: center;
+            border-top: 2px dashed var(--secondary-color);
+            border-bottom: 2px dashed var(--secondary-color);
+            margin-top: 20px;
+        }
+        .stats-section h2 {
+            font-size: 2em;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            font-family: 'Prompt', sans-serif;
+        }
+        .stat-box-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stat-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 1.1em;
+            color: var(--text-dark);
+        }
+
+        /* --- Call to Action / Footer --- */
+        .infographic-footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        .infographic-footer h3 {
+            margin: 0 0 10px;
+            font-size: 1.8em;
+            font-family: 'Prompt', sans-serif;
+        }
+        .infographic-footer p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .infographic-header h1 { font-size: 2.2em; }
+            .infographic-header p { font-size: 1.1em; }
+            .content-grid { grid-template-columns: 1fr; }
+            .stat-box-grid { flex-direction: column; align-items: center; }
+            .stat-box { max-width: unset; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="infographic-container">
+        <div class="infographic-header">
+            <h1>นครชัยบุรินทร์ <br> กินหมดจาน ลดโลกร้อน</h1>
+            <p>ร่วมพลิกวิกฤตขยะอาหาร สู่โอกาสสร้างอนาคตที่ยั่งยืน</p>
+        </div>
+
+        <div class="content-grid">
+            <div class="grid-item full-width">
+                <div class="item-icon">🗑️</div>
+                <h2 class="item-title">รู้หรือไม่? ขยะอาหารคือตัวร้ายทำลายโลก!</h2>
+                <p class="item-text">
+                    ในประเทศไทย ขยะอาหารมีสัดส่วนเกือบ <strong>40% ของขยะทั้งหมด</strong> และเมื่อถูกทิ้งลงหลุมฝังกลบ มันจะย่อยสลายแบบไร้อากาศ ปล่อยก๊าซ <strong>มีเทน (Methane)</strong> ซึ่งเป็นก๊าซเรือนกระจกที่รุนแรงกว่าคาร์บอนไดออกไซด์ถึง <strong>28 เท่า!</strong> การลดขยะอาหารจึงเป็นการช่วยโลกได้อย่างยิ่งใหญ่ที่คุณทำได้ทุกวัน
+                </p>
+            </div>
+
+            <div class="grid-item">
+                <div class="item-icon">💡</div>
+                <h3 class="item-title">เริ่มง่ายๆ ที่ "บ้าน" คุณ</h3>
+                <p class="item-text">
+                    <strong>วางแผนซื้อ:</strong> ซื้อเท่าที่จำเป็น ทำลิสต์ก่อนไปตลาด <br>
+                    <strong>จัดเก็บดี:</strong> จัดระเบียบตู้เย็น เห็นของที่ต้องทานก่อน <br>
+                    <strong>กินให้หมดจาน:</strong> ตักแต่พอดี ไม่เหลือทิ้ง <br>
+                    <strong>สร้างสรรค์เมนู:</strong> นำอาหารเหลือมาแปรรูปเป็นเมนูใหม่
+                </p>
+            </div>
+
+            <div class="grid-item">
+                <div class="item-icon">🍽️</div>
+                <h3 class="item-title">สถานประกอบการ ทำได้มากกว่า</h3>
+                <p class="item-text">
+                    <strong>บริหารวัตถุดิบ:</strong> สั่งซื้ออย่างแม่นยำ ลดการสต็อกเกิน <br>
+                    <strong>ออกแบบเมนู:</strong> เสนอขนาดจานที่หลากหลาย <br>
+                    <strong>บริจาคอาหาร:</strong> ส่งต่ออาหารส่วนเกินที่ยังดีสู่ผู้ขาดแคลน (Food Bank) <br>
+                    <strong>คัดแยกเศษอาหาร:</strong> แยกเศษอาหาร เพื่อนำไปใช้ประโยชน์ต่อ
+                </p>
+            </div>
+            
+            <div class="grid-item">
+                <div class="item-icon">♻️</div>
+                <h3 class="item-title">อปท. และชุมชน รวมพลัง</h3>
+                <p class="item-text">
+                    <strong>นโยบายชัดเจน:</strong> ออกข้อบัญญัติท้องถิ่นหนุนการคัดแยก <br>
+                    <strong>ระบบเก็บขน:</strong> จัดรถเก็บขนเศษอาหารแยกประเภท <br>
+                    <strong>ศูนย์เรียนรู้:</strong> ตั้งศูนย์แปรรูปขยะอาหารเป็นปุ๋ย/อาหารสัตว์ <br>
+                    <strong>รณรงค์ต่อเนื่อง:</strong> สร้างความตระหนักรู้สู่ทุกครัวเรือน
+                </p>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2>ผลลัพธ์ที่ยิ่งใหญ่ จากการ "กินหมดจาน" ของคุณ</h2>
+            <div class="stat-box-grid">
+                <div class="stat-box">
+                    <div class="stat-value">🌍</div>
+                    <div class="stat-label">ลดการปล่อยก๊าซเรือนกระจก</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">💰</div>
+                    <div class="stat-label">ประหยัดค่าใช้จ่ายครัวเรือน/ธุรกิจ</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">🌱</div>
+                    <div class="stat-label">เพิ่มพื้นที่สีเขียวจากปุ๋ยหมัก</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="infographic-footer">
+            <h3>"นครชัยบุรินทร์ กินหมดจาน ลดโลกร้อน"</h3>
+            <p>โครงการบูรณาการเพิ่มประสิทธิภาพการบริหารจัดการขยะมูลฝอย (CCE) <br>
+            โดย สำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11</p>
+        </div>
+    </div>
+
+</body>
+</html>

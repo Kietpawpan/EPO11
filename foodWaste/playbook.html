@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playbook: ชุดคู่มือการจัดการขยะอาหารฉบับนครชัยบุรินทร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #28a745;
+            --accent-color: #ffc107;
+            --text-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.8;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .playbook-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- Hero Header --- */
+        .hero-header {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(rgba(0, 45, 95, 0.7), rgba(0, 45, 95, 0.7)), url('https://images.unsplash.com/photo-1604527459736-1f3c36502c0b?q=80&w=2070&auto=format&fit=crop') center/cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .hero-header h1 {
+            margin: 0;
+            font-size: 3.5em;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        .hero-header h2 {
+            margin: 10px 0 0;
+            font-size: 1.5em;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .content-section {
+            padding: 40px 50px;
+        }
+
+        h2.section-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* --- Foreword / Introduction --- */
+        .foreword {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            background-color: #e9f5ff;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+        .foreword img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color);
+        }
+        .foreword p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+        .foreword .signature {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 15px;
+            display: block;
+        }
+        
+        /* --- Case Study Section --- */
+        .case-study-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .case-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.07);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+        .case-card-header {
+            padding: 20px;
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .case-card-header h3 {
+            margin: 0;
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
+        .case-card-header .location {
+            font-size: 1em;
+            color: #6c757d;
+        }
+        .case-card-body {
+            padding: 20px;
+        }
+        .case-card-body blockquote {
+            margin: 0 0 15px 0;
+            font-style: italic;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+            font-size: 1.05em;
+        }
+        .case-card-body .results h4 {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin: 15px 0 5px;
+        }
+        .case-card-body ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        /* --- Implementation Steps --- */
+        .steps-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .step-box {
+            background-color: var(--light-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+        }
+        .step-box .step-number {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+        .step-box h3 {
+            margin: 10px 0;
+            font-size: 1.4em;
+            color: var(--primary-color);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+        .footer p { margin: 5px 0; }
+        .footer .logo { font-weight: bold; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+    <div class="playbook-container">
+        <header class="hero-header">
+            <h1>ชุดคู่มือการจัดการขยะอาหาร</h1>
+            <h2>ฉบับนครชัยบุรินทร์ (Nakornchaiburin Food Waste Playbook)</h2>
+        </header>
+
+        <main>
+            <section class="content-section">
+                <div class="foreword">
+                    <img src="https://via.placeholder.com/150" alt="Director Portrait">
+                    <div>
+                        <p>
+                            "Playbook ฉบับนี้ไม่ได้เป็นเพียงแค่คู่มือ แต่คือคลังความรู้และแรงบันดาลใจที่กลั่นกรองจากความสำเร็จจริงในพื้นที่กลุ่มจังหวัดนครชัยบุรินทร์ เรามุ่งหวังให้คู่มือเล่มนี้เป็นเครื่องมือสำคัญสำหรับผู้บริหาร อปท., ผู้ประกอบการ และผู้นำชุมชน ในการนำไปปรับใช้และสร้างการเปลี่ยนแปลง เพื่อขับเคลื่อนภูมิภาคของเราสู่สังคมคาร์บอนต่ำอย่างยั่งยืน"
+                        </p>
+                        <span class="signature">
+                            - ผู้อำนวยการสำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" style="background-color: var(--light-bg);">
+                <h2 class="section-title">กรณีศึกษา: เรื่องราวความสำเร็จจากพื้นที่จริง</h2>
+                <div class="case-study-grid">
+                    <div class="case-card">
+                        <div class="case-card-header">
+                            <h3>🏨 โรงแรมโคราซอน: ลดต้นทุน สร้างชื่อเสียง</h3>
+                            <span class="location">ประเภท: เมืองศูนย์กลางเศรษฐกิจ (จ.นครราชสีมา)</span>
+                        </div>
+                        <div class="case-card-body">
+                            <blockquote>"การเข้าร่วมโครงการ CCE ไม่ใช่ต้นทุน แต่คือการลงทุนที่คุ้มค่า เราลดค่ากำจัดขยะไปได้มหาศาล และยังได้ภาพลักษณ์ที่ดีกลับมาอีกด้วย"</blockquote>
+                            <div class="results">
+                                <h4>ผลลัพธ์ที่สำคัญ:</h4>
+                                <ul>
+                                    <li>ลดปริมาณขยะอาหารได้ <strong>35%</strong> ภายใน 6 เดือน</li>
+                                    <li>ประหยัดค่าใช้จ่ายในการกำจัดขยะกว่า <strong>300,000 บาท/ปี</strong></li>
+                                    <li>เศษอาหารนำไปเลี้ยงสัตว์และทำปุ๋ยใช้ในสวนของโรงแรม</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-card-header">
+                            <h3>🛒 ตลาดสดเทศบาลเมืองสุรินทร์: เปลี่ยนขยะเปียกเป็นทองคำ</h3>
+                            <span class="location">ประเภท: ชุมชนกึ่งเมือง (จ.สุรินทร์)</span>
+                        </div>
+                        <div class="case-card-body">
+                            <blockquote>"จากเดิมที่เศษผักผลไม้เป็นปัญหา ตอนนี้กลายเป็นวัตถุดิบชั้นดีที่กลุ่มเกษตรกรรอรับ เราสร้างรายได้กลับคืนสู่ชุมชน และตลาดยังสะอาดขึ้นมาก"</blockquote>
+                            <div class="results">
+                                <h4>ผลลัพธ์ที่สำคัญ:</h4>
+                                <ul>
+                                    <li>จัดตั้ง <strong>"ศูนย์จัดการขยะอินทรีย์ชุมชน"</strong></li>
+                                    <li>ผลิตปุ๋ยหมักคุณภาพสูงได้ <strong>5 ตัน/เดือน</strong></li>
+                                    <li>ลดข้อร้องเรียนเรื่องกลิ่นและสัตว์รบกวนได้ <strong>90%</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="case-card">
+                        <div class="case-card-header">
+                            <h3>🏡 ชุมชนบ้านชีลอง: พลังครัวเรือนสู่ความยั่งยืน</h3>
+                            <span class="location">ประเภท: ชุมชนเกษตรกรรม (จ.ชัยภูมิ)</span>
+                        </div>
+                        <div class="case-card-body">
+                            <blockquote>"เราเริ่มจากผู้นำไม่กี่คน ทำถังหมักรักษ์โลกให้ดูก่อน พอชาวบ้านเห็นว่าทำง่ายและได้ปุ๋ยดีๆ ไปใช้ ก็ทำตามกันทั้งหมู่บ้าน"</blockquote>
+                            <div class="results">
+                                <h4>ผลลัพธ์ที่สำคัญ:</h4>
+                                <ul>
+                                    <li>ครัวเรือนเข้าร่วมโครงการคัดแยกขยะอาหาร <strong>85%</strong></li>
+                                    <li>ปริมาณขยะที่ อปท. ต้องเก็บขนลดลง <strong>20%</strong></li>
+                                    <li>เกิดธนาคารปุ๋ย แลกเปลี่ยนผลผลิตในชุมชน</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="content-section">
+                <h2 class="section-title">4 ขั้นตอนสู่ความสำเร็จ (Implementation Steps)</h2>
+                <div class="steps-container">
+                    <div class="step-box">
+                        <div class="step-number">01</div>
+                        <h3>สร้างทีมและพันธมิตร</h3>
+                        <p>จัดตั้งคณะทำงานร่วม 3 ภาคส่วน (รัฐ-เอกชน-ประชาสังคม) กำหนดเป้าหมายร่วมกัน และสร้างเครือข่ายความร่วมมือที่เข้มแข็ง</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">02</div>
+                        <h3>สำรวจและวิเคราะห์ข้อมูล</h3>
+                        <p>ดำเนินการตรวจวัดขยะอาหาร (Waste Audit) เพื่อหาข้อมูลฐาน (Baseline) ทำให้รู้ว่าขยะอาหารมาจากไหนและมีปริมาณเท่าไหร่</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">03</div>
+                        <h3>ลงมือปฏิบัติตามบริบท</h3>
+                        <p>เลือกใช้กลยุทธ์ที่เหมาะสมกับพื้นที่ เช่น การทำปุ๋ยหมัก, การส่งต่ออาหารส่วนเกิน (Food Bank), การเลี้ยงสัตว์, หรือการผลิตไบโอแก๊ส</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">04</div>
+                        <h3>วัดผลและสื่อสารความสำเร็จ</h3>
+                        <p>ติดตามข้อมูลอย่างสม่ำเสมอ คำนวณ GHG ที่ลดได้ และสื่อสารผลลัพธ์เพื่อสร้างแรงบันดาลใจและขยายผลความสำเร็จในวงกว้าง</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="footer">
+            <p class="logo">Nakornchaiburin Food Waste Playbook</p>
+            <p>สนับสนุนและจัดทำโดย สำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11 (นครราชสีมา)</p>
+            <p>โครงการบูรณาการเพิ่มประสิทธิภาพการบริหารจัดการขยะมูลฝอย (CCE)</p>
+        </footer>
+    </div>
+
+</body>
+</html>

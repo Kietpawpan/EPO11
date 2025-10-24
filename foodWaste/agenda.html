@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กำหนดการประชุมเชิงปฏิบัติการ: โครงการ CCE นครชัยบุรินทร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* --- Header Section --- */
+        .header {
+            background: linear-gradient(135deg, #0056b3, #007bff);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* --- Details Section (Date, Time, Location) --- */
+        .details {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            margin: 10px 15px;
+            color: #495057;
+        }
+        .detail-item span {
+            font-size: 1.8em;
+            margin-right: 12px;
+        }
+
+        /* --- Agenda Timeline Section --- */
+        .agenda {
+            padding: 30px;
+        }
+        .agenda-item {
+            display: flex;
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 30px; /* Space for timeline line */
+        }
+        .agenda-item::before { /* The timeline vertical line */
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 5px;
+            bottom: 0;
+            width: 2px;
+            background-color: #dee2e6;
+        }
+         .agenda-item:last-child::before {
+            display: none;
+        }
+        .agenda-time {
+            flex-shrink: 0;
+            width: 120px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #0056b3;
+            position: relative;
+        }
+         .agenda-time::before { /* The circle on the timeline */
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: #007bff;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .agenda-details {
+            flex-grow: 1;
+        }
+        .agenda-details h3 {
+            margin: 0 0 5px;
+            font-size: 1.2em;
+            color: #343a40;
+        }
+        .agenda-details p {
+            margin: 0;
+            font-size: 1em;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        .panelist {
+            font-style: italic;
+            font-size: 0.9em !important;
+            margin-top: 8px !important;
+        }
+        
+        /* --- Special Item Styling (Breaks, Lunch) --- */
+        .break-item .agenda-time::before {
+             background-color: #ffc107; /* Yellow for breaks */
+        }
+        .break-item h3 {
+             color: #c69500;
+        }
+        
+        /* --- Footer --- */
+        .footer {
+            padding: 20px 30px;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .register-button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .register-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .footer p {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .details {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .agenda-item {
+                flex-direction: column;
+            }
+            .agenda-time {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1>กำหนดการประชุมเชิงปฏิบัติการ</h1>
+            <p>Kick-off โครงการบูรณาการเพิ่มประสิทธิภาพการบริหารจัดการขยะมูลฝอย (CCE) <br>กลุ่มจังหวัดนครชัยบุรินทร์</p>
+        </header>
+
+        <section class="details">
+            <div class="detail-item">
+                <span>🗓️</span>
+                <div>
+                    <strong>วันศุกร์ที่ 15 พฤศจิกายน 2568</strong>
+                </div>
+            </div>
+            <div class="detail-item">
+                <span>🕒</span>
+                <div>
+                    <strong>เวลา 08:30 – 16:30 น.</strong>
+                </div>
+            </div>
+            <div class="detail-item">
+                <span>📍</span>
+                <div>
+                    <strong>ณ ห้องประชุมศรีโคตรบูรณ์<br>โรงแรมเซนเตอร์ พอยต์ เทอร์มินอล 21 โคราช</strong>
+                </div>
+            </div>
+        </section>
+
+        <main class="agenda">
+            <div class="agenda-item">
+                <div class="agenda-time">08:30 – 09:00 น.</div>
+                <div class="agenda-details">
+                    <h3>ลงทะเบียนและรับเอกสาร</h3>
+                    <p>รับประทานอาหารว่างและเครื่องดื่ม</p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">09:00 – 09:15 น.</div>
+                <div class="agenda-details">
+                    <h3><a href="open.html">พิธีเปิดการประชุม</a></h3>
+                    <p>โดย <strong>ผู้ว่าราชการจังหวัดนครราชสีมา</strong> (ประธานในพิธี)</p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">09:15 – 10:30 น.</div>
+                <div class="agenda-details">
+                    <h3><a href="keynote.html">บรรยายพิเศษ: "วิกฤตขยะอาหาร...สู่เป้าหมาย Net Zero ของไทย"</a></h3>
+                    <p>ชี้แจงที่มา ความสำคัญ วัตถุประสงค์ และเป้าหมายของโครงการ CCE<br>โดย <strong>ผู้อำนวยการสำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11</strong></p>
+                </div>
+            </div>
+            <div class="agenda-item break-item">
+                <div class="agenda-time">10:30 – 10:45 น.</div>
+                <div class="agenda-details">
+                    <h3>พักรับประทานอาหารว่าง</h3>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">10:45 – 12:00 น.</div>
+                <div class="agenda-details">
+                    <h3>เวทีเสวนา: "พลังภาคีขับเคลื่อนนครชัยบุรินทร์สู่เมืองปลอดขยะ"</h3>
+                    <p class="panelist">
+                        • ผู้แทนสำนักงานทรัพยากรธรรมชาติและสิ่งแวดล้อมจังหวัด (ทสจ.)<br>
+                        • ผู้แทนหอการค้าจังหวัดนครราชสีมา<br>
+                        • ผู้แทนสภาอุตสาหกรรมจังหวัดบุรีรัมย์<br>
+                        • ผู้แทนผู้ประกอบการโรงแรม<br>
+                        • ผู้แทนผู้นำชุมชนดีเด่นด้านสิ่งแวดล้อม
+                    </p>
+                </div>
+            </div>
+            <div class="agenda-item break-item">
+                <div class="agenda-time">12:00 – 13:00 น.</div>
+                <div class="agenda-details">
+                    <h3>พักรับประทานอาหารกลางวัน</h3>
+                </div>
+            </div>
+
+            <div class="agenda-item">
+                <div class="agenda-time">13:00 – 14:45 น.</div>
+                <div class="agenda-details">
+                    <h3>กิจกรรมกลุ่มย่อย (Workshop): "ร่วมออกแบบ<a href="guideline.html">แนวทางการจัดการขยะอาหารในพื้นที่</a>"</h3>
+                    <p>แบ่งกลุ่มระดมสมองตามบริบทของภาคส่วน เพื่อวิเคราะห์ปัญหาและเสนอแนวทางแก้ไข</p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">14:45 – 15:30 น.</div>
+                <div class="agenda-details">
+                    <h3>นำเสนอผลการระดมสมอง และเปิดรับฟังความคิดเห็น</h3>
+                    <p>ตัวแทนแต่ละกลุ่มนำเสนอผลการประชุมและแลกเปลี่ยนข้อเสนอแนะ</p>
+                </div>
+            </div>
+             <div class="agenda-item break-item">
+                <div class="agenda-time">15:30 – 15:45 น.</div>
+                <div class="agenda-details">
+                    <h3>พักรับประทานอาหารว่าง</h3>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">15:45 – 16:15 น.</div>
+                <div class="agenda-details">
+                    <h3>สรุปผลและกำหนด<a href="nextStep.html">แนวทางการขับเคลื่อนขั้นต่อไป (Next Steps)</a></h3>
+                    <p>โดย <strong>ผู้จัดการโครงการ (สคพ.11)</strong></p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">16:15 – 16:30 น.</div>
+                <div class="agenda-details">
+                    <h3><a href="close.html">กล่าวปิดการประชุม</a></h3>
+                    <p>โดย <strong>ผู้อำนวยการสำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11</strong></p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <a href="#" class="register-button">ยืนยันการเข้าร่วมประชุม</a>
+            <p>กรุณายืนยันการเข้าร่วมภายในวันที่ 8 พฤศจิกายน 2568<br>
+            สอบถามข้อมูลเพิ่มเติม: (ชื่อผู้ประสานงาน) โทร. XXX-XXX-XXXX</p>
+<a href="foodWaste.html">กลับ</a>
+        </footer>
+
+
+    </div>
+</body>
+</html>

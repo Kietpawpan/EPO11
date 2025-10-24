@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กำหนดการ: เวทีสรุปผลสำเร็จและส่งมอบอนาคต โครงการ CCE นครชัยบุรินทร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #004a99; /* A more prestigious navy blue */
+            --secondary-color: #1e8449; /* Deep Green for sustainability */
+            --accent-color: #f1c40f; /* Gold for achievement */
+            --text-color: #212529;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.8;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        /* --- Hero Header --- */
+        .hero-header {
+            padding: 60px 30px;
+            background: linear-gradient(rgba(0, 50, 100, 0.8), rgba(0, 50, 100, 0.8)), url('https://images.unsplash.com/photo-1599838129288-56e6b637b0a3?q=80&w=2070&auto=format&fit=crop') center/cover;
+            color: white;
+            text-align: center;
+        }
+        .hero-header h1 {
+            margin: 0;
+            font-size: 3em;
+            font-weight: 800;
+        }
+        .hero-header h2 {
+            margin: 10px 0 0;
+            font-size: 1.4em;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* --- Details Section --- */
+        .details {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 25px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            margin: 10px 15px;
+            color: #495057;
+        }
+        .detail-item span {
+            font-size: 2em;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+
+        /* --- Agenda Timeline Section --- */
+        .agenda {
+            padding: 40px 50px;
+        }
+        .agenda-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 40px;
+        }
+        .agenda-item::before { /* Vertical line */
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 5px;
+            bottom: -15px; /* Extend line between items */
+            width: 3px;
+            background-color: #e9ecef;
+        }
+        .agenda-item:last-child::before { display: none; }
+
+        .agenda-time {
+            flex-shrink: 0;
+            width: 130px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            position: relative;
+        }
+        .agenda-time::before { /* Circle on timeline */
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background-color: var(--primary-color);
+            border: 4px solid #fff;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .agenda-details { flex-grow: 1; }
+        .agenda-details h3 {
+            margin: 0 0 8px;
+            font-size: 1.3em;
+            color: #343a40;
+        }
+        .agenda-details p {
+            margin: 0;
+            font-size: 1.05em;
+            color: #6c757d;
+        }
+        .panelist-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+        .panelist-list li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+        .panelist-list li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        /* --- Special Item Styling --- */
+        .break-item .agenda-time::before { background-color: #6c757d; }
+        .break-item h3 { color: #6c757d; }
+        
+        .highlight-item { background-color: #fff8e1; padding: 20px; border-radius: 12px; margin-left: -20px; }
+        .highlight-item .agenda-time::before { background-color: var(--accent-color); }
+        .highlight-item h3 { color: var(--accent-color); font-size: 1.5em; }
+        .highlight-item .icon { font-size: 1.5em; margin-right: 10px; }
+
+        /* --- Footer --- */
+        .footer {
+            padding: 30px;
+            background-color: #343a40;
+            text-align: center;
+            color: #f8f9fa;
+        }
+        .footer p { margin: 5px 0; }
+        
+        @media (max-width: 768px) {
+            .details { flex-direction: column; align-items: flex-start; }
+            .agenda-item { flex-direction: column; }
+            .agenda-time { margin-bottom: 10px; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="hero-header">
+            <h1>เวทีสรุปผลสำเร็จและส่งมอบอนาคต</h1>
+            <h2>โครงการ CCE สู่การขับเคลื่อน "นครชัยบุรินทร์" เมืองคาร์บอนต่ำอย่างยั่งยืน</h2>
+        </header>
+
+        <section class="details">
+            <div class="detail-item">
+                <span>🗓️</span>
+                <div>
+                    <strong>วันศุกร์ที่ 19 กันยายน 2568</strong>
+                </div>
+            </div>
+            <div class="detail-item">
+                <span>🕒</span>
+                <div>
+                    <strong>เวลา 08:30 – 16:00 น.</strong>
+                </div>
+            </div>
+            <div class="detail-item">
+                <span>📍</span>
+                <div>
+                    <strong>ณ ห้องแกรนด์บอลรูม<br>โรงแรมฟอร์จูน โคราช, จ.นครราชสีมา</strong>
+                </div>
+            </div>
+        </section>
+
+        <main class="agenda">
+            <div class="agenda-item">
+                <div class="agenda-time">08:30 – 09:00 น.</div>
+                <div class="agenda-details">
+                    <h3>ลงทะเบียนผู้บริหาร และชมนิทรรศการผลสำเร็จจากพื้นที่นำร่อง</h3>
+                    <p>รับประทานอาหารว่างและเครื่องดื่ม</p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">09:00 – 09:30 น.</div>
+                <div class="agenda-details">
+                    <h3>พิธีเปิดและกล่าวปาฐกถาพิเศษ</h3>
+                    <p><strong>หัวข้อ:</strong> "นโยบาย BCG และก้าวต่อไปของประเทศไทยสู่ Net Zero"<br>
+                    <strong>โดย: ปลัดกระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม</strong> (ประธานในพิธี)</p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">09:30 – 10:15 น.</div>
+                <div class="agenda-details">
+                    <h3>นำเสนอผลสรุปโครงการ: "จากวิกฤตสู่โอกาส: ถอดรหัสความสำเร็จโครงการ CCE"</h3>
+                    <p>สรุปผลการดำเนินงาน ปัจจัยแห่งความสำเร็จ และผลลัพธ์เชิงปริมาณ (GHG ที่ลดได้)<br>
+                    <strong>โดย: ผู้อำนวยการสำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11</strong></p>
+                </div>
+            </div>
+            <div class="agenda-item break-item">
+                <div class="agenda-time">10:15 – 10:30 น.</div>
+                <div class="agenda-details">
+                    <h3>พักรับประทานอาหารว่าง</h3>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">10:30 – 12:00 น.</div>
+                <div class="agenda-details">
+                    <h3>เวทีเสวนา: "เรื่องเล่าจากคนหน้างาน: พลิกเมืองด้วยมือเรา"</h3>
+                    <p>แลกเปลี่ยนประสบการณ์ตรง ความท้าทาย และบทเรียนจากพื้นที่นำร่อง</p>
+                    <ul class="panelist-list">
+                        <li>ผู้บริหาร อปท. จากพื้นที่นำร่อง จ.สุรินทร์</li>
+                        <li>ผู้ประกอบการโรงแรมต้นแบบ จ.นครราชสีมา</li>
+                        <li>ประธานตลาดสดเทศบาล จ.ชัยภูมิ</li>
+                        <li>ผู้นำชุมชนดีเด่น จ.บุรีรัมย์</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="agenda-item break-item">
+                <div class="agenda-time">12:00 – 13:00 น.</div>
+                <div class="agenda-details">
+                    <h3>พักรับประทานอาหารกลางวัน</h3>
+                </div>
+            </div>
+
+            <div class="agenda-item highlight-item">
+                <div class="agenda-time">13:00 – 14:30 น.</div>
+                <div class="agenda-details">
+                    <h3><span class="icon">📖</span>พิธีส่งมอบ "Playbook" และประกาศเจตนารมณ์สานต่อความสำเร็จ</h3>
+                    <p>
+                        • <strong>พิธีส่งมอบ "ชุดคู่มือการจัดการขยะอาหารฉบับนครชัยบุรินทร์"</strong> ให้แก่ผู้บริหาร อปท. ทั้ง 4 จังหวัด โดยประธานในพิธี<br>
+                        • <strong>พิธีลงนามประกาศเจตนารมณ์</strong> "ความร่วมมือขับเคลื่อนนครชัยบุรินทร์สู่เมืองคาร์บอนต่ำ"
+                    </p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">14:30 – 15:30 น.</div>
+                <div class="agenda-details">
+                    <h3>ชี้แจงแนวทางการนำ Playbook ไปปรับใช้และกลไกการสนับสนุน</h3>
+                    <p>
+                        แนะนำขั้นตอนการนำคู่มือไปใช้, ช่องทางการขอคำปรึกษาจาก สคพ.11, และแหล่งทุนสนับสนุนโครงการด้านสิ่งแวดล้อม
+                    </p>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">15:30 – 16:00 น.</div>
+                <div class="agenda-details">
+                    <h3>กล่าวปิดและให้โอวาท</h3>
+                    <p>
+                        <strong>โดย: ผู้ว่าราชการจังหวัดนครราชสีมา</strong>
+                    </p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p><strong>สอบถามข้อมูลเพิ่มเติมและยืนยันการเข้าร่วม:</strong><br>
+            ฝ่ายประสานงานโครงการ CCE, สคพ.11 | โทร. XXX-XXX-XXXX</p>
+        </footer>
+    </div>
+
+</body>
+</html>
