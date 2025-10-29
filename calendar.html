@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ปฏิทินการดำเนินงานและแผนการเบิกจ่ายงบประมาณ สคพ.11 (ปีงบประมาณ 2569)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #0077b6;
+            --secondary-color: #005a8d;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #333;
+            --muted-text: #6c757d;
+            --highlight-bg: #e7f5ff;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.7;
+            background-color: #f0f7ff;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 20px auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #ffffff;
+            padding: 30px 40px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+
+        .main-content {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            color: var(--secondary-color);
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            min-width: 1500px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        
+        thead th {
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f8fc;
+        }
+        
+        tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        td { text-align: right; }
+        tbody td:first-child, tbody td:nth-child(2) { text-align: left; }
+        tfoot td:first-child { text-align: left; }
+
+        td:first-child {
+            font-weight: 700;
+            background-color: var(--light-bg);
+            white-space: normal;
+        }
+        
+        td:nth-child(2) {
+             white-space: normal;
+        }
+
+        tfoot td {
+            background-color: var(--light-bg);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .sub-activity {
+            padding-left: 15px;
+            color: var(--muted-text);
+        }
+        
+        .total-budget {
+            background-color: var(--highlight-bg);
+            border: 1px solid #bde0fe;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1em;
+            margin: 30px 0;
+        }
+        
+        .observation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .observation-card {
+            background-color: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .observation-card h3 {
+            margin-top: 0;
+            font-size: 1.3em;
+            color: var(--secondary-color);
+        }
+        
+        .observation-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: var(--muted-text);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>ปฏิทินการดำเนินงานและแผนการเบิกจ่ายงบประมาณ สคพ.11 (ปีงบประมาณ 2569)</h1>
+        </header>
+        <div class="main-content">
+            <section class="section">
+                <h2>📊 ตารางปฏิทินและแผนการเบิกจ่ายรายเดือน</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">รหัส</th>
+                            <th style="width: 18%;">กิจกรรม (ตามแผน)</th>
+                            <th>ต.ค. 68</th><th>พ.ย. 68</th><th>ธ.ค. 68</th><th>ม.ค. 69</th><th>ก.พ. 69</th><th>มี.ค. 69</th><th>เม.ย. 69</th><th>พ.ค. 69</th><th>มิ.ย. 69</th><th>ก.ค. 69</th><th>ส.ค. 69</th><th>ก.ย. 69</th>
+                            <th style="width: 7%;">รวม (บาท)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="4"><b>P1</b></td>
+                            <td><b>โครงการจัดการขยะ (GHG)</b></td>
+                            <td>730</td><td>7,780</td><td>31,460</td><td>47,795</td><td>8,515</td><td>38,580</td><td>16,600</td><td>18,700</td><td>-</td><td>-</td><td>40,000</td><td>-</td>
+                            <td><b>195,300</b></td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">1.2 สร้างเครือข่าย/นำร่อง</td>
+                            <td>730</td><td>3,120</td><td>13,010</td><td>3,515</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>40,000</td><td>-</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">2.1 วิเคราะห์องค์ประกอบขยะ</td>
+                            <td>-</td><td>4,660</td><td>9,660</td><td>38,580</td><td>-</td><td>38,580</td><td>16,600</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">ค่าบริหารโครงการ (25%)</td>
+                            <td>-</td><td>-</td><td>8,790</td><td>5,700</td><td>8,515</td><td>-</td><td>-</td><td>18,700</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3"><b>P2</b></td>
+                            <td><b>โครงการจัดการคุณภาพน้ำ</b></td>
+                            <td>17,500</td><td>117,740</td><td>35,455</td><td>73,785</td><td>77,223</td><td>67,785</td><td>69,210</td><td>42,840</td><td>54,996</td><td>-</td><td>19,000</td><td>19,000</td>
+                            <td><b>595,534</b></td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">ก. ผลักดันจัดการน้ำเสีย (ผส.)</td>
+                            <td>500</td><td>740</td><td>6,380</td><td>1,360</td><td>20,685</td><td>6,160</td><td>15,260</td><td>7,840</td><td>455</td><td>-</td><td>-</td><td>-</td>
+                            <td>(59,380)</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">ค. แก้ไขปัญหาคุณภาพน้ำ (นอ.)</td>
+                            <td>17,000</td><td>117,000</td><td>29,075</td><td>72,425</td><td>56,538</td><td>61,625</td><td>53,950</td><td>35,000</td><td>54,541</td><td>-</td><td>19,000</td><td>19,000</td>
+                            <td>(520,200)</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4"><b>P3</b></td>
+                            <td><b>โครงการจัดการมลพิษอากาศ</b></td>
+                            <td>-</td><td>43,000</td><td>218,500</td><td>192,638</td><td>61,625</td><td>35,000</td><td>159,888</td><td>138,512</td><td>31,000</td><td>16,000</td><td>13,000</td><td>10,000</td>
+                            <td><b>920,201</b></td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">1. เพิ่มประสิทธิภาพ PM2.5 (นอ.)</td>
+                            <td>-</td><td>30,000</td><td>179,425</td><td>112,713</td><td>16,000</td><td>16,000</td><td>14,000</td><td>16,000</td><td>26,000</td><td>12,000</td><td>12,000</td><td>12,000</td>
+                            <td>(513,300)</td>
+                        </tr>
+                         <tr>
+                            <td class="sub-activity">2. รณรงค์เผยแพร่ PM2.5 (นอ.)</td>
+                             <td>-</td><td>-</td><td>22,500</td><td>7,500</td><td>7,500</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                            <td>(30,000)</td>
+                        </tr>
+                         <tr>
+                            <td class="sub-activity">4.1&5. ค่าจ้าง/บริหารโครงการ</td>
+                             <td>-</td><td>12,000</td><td>16,575</td><td>72,425</td><td>38,125</td><td>19,000</td><td>145,888</td><td>122,512</td><td>5,000</td><td>16,000</td><td>11,000</td><td>8,000</td>
+                            <td>(376,901)</td>
+                        </tr>
+                         <tr>
+                            <td rowspan="4"><b>P4</b></td>
+                            <td><b>โครงการจัดการขยะ/ของเสียอันตราย</b></td>
+                             <td>23,936</td><td>31,460</td><td>83,671</td><td>124,055</td><td>116,000</td><td>68,260</td><td>71,074</td><td>70,870</td><td>115,054</td><td>126,510</td><td>18,460</td><td>-</td>
+                            <td><b>809,330</b></td>
+                        </tr>
+                         <tr>
+                            <td class="sub-activity">1.1 ติดตามสถานที่กำจัด</td>
+                             <td>19,080</td><td>17,720</td><td>33,080</td><td>21,640</td><td>25,800</td><td>22,120</td><td>29,330</td><td>12,870</td><td>23,840</td><td>17,789</td><td>23,600</td><td>-</td>
+                             <td>(267,869)</td>
+                        </tr>
+                          <tr>
+                            <td class="sub-activity">2.1-3.5 จัดการขยะ/ของเสียอันตราย</td>
+                             <td>4,856</td><td>5,960</td><td>28,090</td><td>64,440</td><td>36,620</td><td>28,330</td><td>31,500</td><td>34,120</td><td>70,700</td><td>70,700</td><td>6,920</td><td>15,000</td>
+                             <td>(406,450)</td>
+                        </tr>
+                          <tr>
+                            <td class="sub-activity">ค่าบริหารโครงการ (25%)</td>
+                             <td>-</td><td>7,780</td><td>22,501</td><td>37,975</td><td>53,580</td><td>17,810</td><td>10,244</td><td>23,880</td><td>20,514</td><td>38,021</td><td>-12,060</td><td>-15,000</td>
+                             <td>(135,011)</td>
+                        </tr>
+                         <tr>
+                            <td rowspan="3"><b>P5</b></td>
+                             <td><b>โครงการบังคับใช้ ก.ม. (น้ำ)</b></td>
+                             <td>10,000</td><td>60,000</td><td>34,000</td><td>85,200</td><td>77,850</td><td>75,500</td><td>52,950</td><td>16,000</td><td>28,400</td><td>16,000</td><td>10,000</td><td>10,000</td>
+                             <td><b>477,800</b></td>
+                        </tr>
+                         <tr>
+                            <td class="sub-activity">1-3. ตรวจสอบ/พัฒนาศักยภาพ</td>
+                            <td>-</td><td>50,000</td><td>39,000</td><td>52,000</td><td>66,850</td><td>7,000</td><td>6,000</td><td>6,000</td><td>6,000</td><td>6,000</td><td>-</td><td>-</td>
+                             <td></td>
+                        </tr>
+                         <tr>
+                            <td class="sub-activity">4.1&5. ค่าจ้าง/บริหารโครงการ</td>
+                             <td>10,000</td><td>10,000</td><td>-5,000</td><td>33,200</td><td>11,000</td><td>68,500</td><td>46,950</td><td>10,000</td><td>22,400</td><td>10,000</td><td>10,000</td><td>10,000</td>
+                             <td></td>
+                        </tr>
+                         <tr>
+                            <td rowspan="3"><b>P6</b></td>
+                             <td><b>โครงการพัฒนาคุณภาพน้ำดิบ</b></td>
+                              <td>39,000</td><td>171,980</td><td>209,800</td><td>66,400</td><td>71,074</td><td>70,870</td><td>161,000</td><td>79,000</td><td>142,795</td><td>199,000</td><td>62,120</td><td>62,365</td>
+                             <td><b>1,374,400</b></td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">1.1-2.7 สำรวจ/เก็บ/วิเคราะห์/ISO</td>
+                             <td>39,000</td><td>171,980</td><td>121,800</td><td>66,400</td><td>63,000</td><td>63,000</td><td>161,000</td><td>61,000</td><td>63,000</td><td>68,120</td><td>62,120</td><td>39,000</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="sub-activity">4. ค่าบริหารโครงการ (25%)</td>
+                             <td>-</td><td>-</td><td>88,000</td><td>-</td><td>8,074</td><td>7,870</td><td>-</td><td>18,000</td><td>79,795</td><td>130,880</td><td>-</td><td>23,365</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>P7</b></td>
+                            <td><b>โครงการบังคับใช้ ก.ม. (ยานยนต์)</b></td>
+                             <td>-</td><td>-</td><td>23,200</td><td>11,000</td><td>1,000</td><td>1,000</td><td>1,000</td><td>12,400</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                            <td><b>49,600</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>P8</b></td>
+                            <td><b>โครงการติดตามคุณภาพน้ำ (บูรณาการ)</b></td>
+                            <td>-</td><td>35,258</td><td>20,000</td><td>-</td><td>23,538</td><td>18,625</td><td>33,538</td><td>-</td><td>23,541</td><td>-</td><td>-</td><td>-</td>
+                            <td><b>154,500</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>P9</b></td>
+                            <td><b>โครงการ EPU</b></td>
+                            <td>-</td><td>31,500</td><td>10,000</td><td>-</td><td>60,500</td><td>-</td><td>-</td><td>-</td><td>3,000</td><td>-</td><td>-</td><td>9,000</td>
+                            <td><b>114,000</b></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="2">รวมงบประมาณรายเดือน (บาท)</td>
+                            <td>91,166</td>
+                            <td>498,718</td>
+                            <td>666,086</td>
+                            <td>600,873</td>
+                            <td>497,125</td>
+                            <td>375,620</td>
+                            <td>565,260</td>
+                            <td>388,322</td>
+                            <td>398,785</td>
+                            <td>357,510</td>
+                            <td>162,580</td>
+                            <td>104,365</td>
+                            <td><b>4,681,241</b></td>
+                        </tr>
+                        <tr class="percentage-row">
+                            <td colspan="2">ร้อยละสะสมของงบประมาณทั้งหมด (%)</td>
+                            <td>1.95%</td>
+                            <td>12.60%</td>
+                            <td>26.85%</td>
+                            <td>39.69%</td>
+                            <td>50.33%</td>
+                            <td>58.35%</td>
+                            <td>70.43%</td>
+                            <td>78.72%</td>
+                            <td>87.23%</td>
+                            <td>94.87%</td>
+                            <td>98.34%</td>
+                            <td>100.00%</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </section>
+            
+            <section class="section" style="overflow: visible;">
+                <h2>🎯 หมายเหตุสำหรับการติดตามและเร่งรัดการเบิกจ่าย</h2>
+                <div class="observation-grid">
+                    <div class="observation-card">
+                        <h3>ไตรมาสที่ 1 (ต.ค. - ธ.ค. 68)</h3>
+                        <ul>
+                            <li><strong>เป้าหมายสะสม:</strong> 26.85%</li>
+                            <li><strong>กิจกรรมเร่งรัด:</strong>
+                                <ul>
+                                    <li><strong>P3 (PM2.5):</strong> เบิกจ่ายสูงสุดใน ธ.ค. (218,500 บ.) เพื่อรองรับช่วงวิกฤตฝุ่น</li>
+                                    <li><strong>P6 (น้ำดิบ/วส.):</strong> เบิกจ่ายสูงใน ธ.ค. (209,800 บ.) เพื่อจัดหาวัสดุและรองรับการจ้างงาน</li>
+                                    <li><strong>P2 (คุณภาพน้ำ):</strong> เบิกจ่าย 100,000 บ. ใน พ.ย. สำหรับค่าตรวจวิเคราะห์</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="observation-card">
+                        <h3>ไตรมาสที่ 2 (ม.ค. - มี.ค. 69)</h3>
+                        <ul>
+                             <li><strong>เป้าหมายสะสม:</strong> 58.35%</li>
+                            <li><strong>จุดสำคัญ:</strong> เป็นช่วงที่ต้องเร่งรัดการเบิกจ่ายเพื่อให้เป็นไปตามเป้าหมายของกรมฯ (60%)</li>
+                             <li><strong>กิจกรรมเร่งรัด:</strong>
+                                <ul>
+                                     <li><strong>P4 (ขยะ):</strong> เบิกจ่ายสูงสุดใน ม.ค. (124,055 บ.) เพื่อขับเคลื่อนการจัดการขยะอันตรายและระบบคัดแยก</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                     <div class="observation-card">
+                        <h3>ความสอดคล้องกับเป้าหมายกรมฯ</h3>
+                        <ul>
+                            <li><strong>เป้าหมายเบิกจ่าย คพ. (รายจ่ายประจำ):</strong> Q1: 37%, Q2: 60%</li>
+                            <li><strong>แผนเบิกจ่าย สคพ.11:</strong> Q1: 26.85%, Q2: 58.35%</li>
+                            <li><strong>⚠️ ข้อสังเกต:</strong> แผนเบิกจ่ายไตรมาส 1 ต่ำกว่าเป้าหมายของกรมฯ แต่ไตรมาส 2 ใกล้เคียงมาก สะท้อนว่าการดำเนินงานใน Q2 มีความสำคัญอย่างยิ่ง</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer>
+            <p>สำนักงานสิ่งแวดล้อมและควบคุมมลพิษที่ 11 (นครราชสีมา)</p>
+        </footer>
+    </div>
+</body>
+</html>
