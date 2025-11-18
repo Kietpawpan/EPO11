@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gantt Chart สคพ.๑๑ ปีงบประมาณ ๒๕๖๙</title>
+    <style>
+        body {
+            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        .gantt-container {
+            width: 100%;
+            /* This overflow-x handles horizontal scrolling */
+            overflow-x: auto; 
+            
+            /* === KEY CHANGES HERE === */
+            /* 1. Set a max-height to create a vertical scroll context */
+            max-height: 80vh; /* 80% of the viewport height */
+            /* 2. Enable vertical scrolling *within* this container */
+            overflow-y: auto; 
+            /* === END OF KEY CHANGES === */
+
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+
+        .gantt-table {
+            width: 100%;
+            min-width: 1600px; /* Ensure table is wide enough for all months */
+            border-collapse: collapse;
+            table-layout: fixed; /* Helps with column consistency */
+        }
+
+        .gantt-table th,
+        .gantt-table td {
+            border: 1px solid #dfe6e9;
+            padding: 12px 10px;
+            text-align: left;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        /* --- Table Header (Sticky for Vertical Scroll) --- */
+        .gantt-table thead th {
+            background-color: #34495e;
+            color: #ffffff;
+            position: sticky; /* This makes the header sticky */
+            top: 0; /* Sticks it to the top of the scrolling container (.gantt-container) */
+            z-index: 10; /* Ensures it stays above the body content */
+            text-align: center;
+            padding: 14px 10px;
+        }
+
+        /* --- Sticky Columns (for Horizontal Scroll) --- */
+        .gantt-table th:nth-child(1) { /* Category Header */
+            width: 160px;
+            min-width: 160px;
+            position: sticky; /* Makes it sticky */
+            left: 0; /* Sticks it to the left */
+            z-index: 11; /* Higher z-index to appear above month headers */
+            background-color: #34495e; /* Ensure background consistency */
+        }
+
+        .gantt-table th:nth-child(2) { /* Activity Header */
+            width: 300px;
+            min-width: 300px;
+            position: sticky; /* Makes it sticky */
+            left: 160px; /* Sticks it next to the first column (must match width of first th) */
+            z-index: 11; /* Higher z-index */
+            background-color: #34495e; /* Ensure background consistency */
+        }
+
+        .gantt-table th:nth-child(n+3) { /* Month columns */
+            width: 90px;
+            min-width: 90px;
+        }
+
+        /* --- Table Body --- */
+        .gantt-table tbody td:nth-child(1),
+        .gantt-table tbody td:nth-child(2) {
+            background-color: #ffffff; /* Background needed for sticky */
+            position: sticky; /* Makes body cells sticky too */
+            z-index: 9; /* Below the header but above the scrollable cells */
+        }
+
+        .gantt-table tbody td:nth-child(1) { /* Category Column Body */
+            left: 0;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .gantt-table tbody td:nth-child(2) { /* Activity Column Body */
+            left: 160px; /* Must match width of first th */
+            white-space: normal;
+            min-height: 40px; /* Ensure row has height */
+        }
+        
+        /* Ensure sticky columns have correct background on hover */
+        .gantt-table tbody tr:hover td {
+            background-color: #fdfdfd;
+        }
+        .gantt-table tbody tr:hover td:nth-child(1),
+        .gantt-table tbody tr:hover td:nth-child(2) {
+            background-color: #ffffff;
+        }
+
+
+        /* --- Quarter Dividers --- */
+        .gantt-table th:nth-child(5), /* ธ.ค. ๖๘ (Q1 End) */
+        .gantt-table td:nth-child(5),
+        .gantt-table th:nth-child(8), /* มี.ค. ๖๙ (Q2 End) */
+        .gantt-table td:nth-child(8),
+        .gantt-table th:nth-child(11), /* มิ.ย. ๖๙ (Q3 End) */
+        .gantt-table td:nth-child(11),
+        .gantt-table th:nth-child(14) { /* ก.ย. ๖๙ (Q4 End) */
+            border-right: 3px solid #7f8c8d;
+        }
+
+        /* --- Gantt Bars --- */
+        .bar {
+            height: 22px;
+            border-radius: 4px;
+            opacity: 0.9;
+            margin: 0 auto;
+            width: 95%;
+        }
+
+        .bar-span {
+            height: 22px;
+            border-radius: 4px;
+            opacity: 0.9;
+            margin: 0;
+            width: 100%;
+            display: block;
+        }
+        
+        /* Bar Colors */
+        .bar.water, .bar-span.water { background-color: #3498db; } /* Blue */
+        .bar.air, .bar-span.air { background-color: #9b59b6; } /* Purple */
+        .bar.waste, .bar-span.waste { background-color: #2ecc71; } /* Green */
+        .bar.admin, .bar-span.admin { background-color: #f39c12; } /* Orange */
+        .bar.lab, .bar-span.lab { background-color: #e74c3c; } /* Red */
+
+        /* --- Tooltip --- */
+        .task-cell {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .task-name {
+            display: block;
+            padding: 5px 0;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #2c3e50;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 15px;
+            z-index: 100; /* Highest z-index to float above all headers */
+            min-width: 350px;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            
+            /* Default position: Above */
+            bottom: 110%;
+            left: 5%;
+            
+            /* Overflow handling */
+            max-height: 250px;
+            overflow-y: auto;
+            white-space: normal; /* Allow text wrapping inside tooltip */
+        }
+        
+        /* Tooltip list formatting */
+        .tooltip ul {
+            margin: 0;
+            padding: 0 0 0 20px;
+            list-style-type: disc;
+        }
+        
+        .tooltip li {
+            margin-bottom: 8px;
+        }
+        .tooltip li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Show tooltip on hover */
+        .task-cell:hover .tooltip {
+            display: block;
+        }
+
+        /* --- SPECIAL TOOLTIP POSITION: Rows 1 & 2 --- */
+        /* Target the first two rows in the table body */
+        tbody tr:nth-child(1) .task-cell .tooltip,
+        tbody tr:nth-child(2) .task-cell .tooltip {
+            bottom: auto;  /* Remove default 'above' positioning */
+            top: 100%;     /* Position it below the cell */
+            margin-top: 5px; /* Add a small gap */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ปฏิทินการดำเนินงานรวม สคพ.๑๑ (นครราชสีมา) ปีงบประมาณ ๒๕๖๙</h1>
+
+    <div class="gantt-container">
+        <table class="gantt-table">
+            <thead>
+                <tr>
+                    <th>หมวดหมู่ (ด้าน)</th>
+                    <th>กิจกรรมหลัก</th>
+                    <th>ต.ค. ๖๘</th>
+                    <th>พ.ย. ๖๘</th>
+                    <th>ธ.ค. ๖๘</th>
+                    <th>ม.ค. ๖๙</th>
+                    <th>ก.พ. ๖๙</th>
+                    <th>มี.ค. ๖๙</th>
+                    <th>เม.ย. ๖๙</th>
+                    <th>พ.ค. ๖๙</th>
+                    <th>มิ.ย. ๖๙</th>
+                    <th>ก.ค. ๖๙</th>
+                    <th>ส.ค. ๖๙</th>
+                    <th>ก.ย. ๖๙</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>บริหาร/ธุรการ (น้ำ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">งานบริหารโครงการ (ค่าจ้างพนักงาน ๓ คน)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ค่าจ้างพนักงานช่วยงาน (ปฏิบัติหน้าที่ ๓ คน)</li>
+                                <li>โครงการ: Lab Development/บริหารโครงการ</li>
+                                <li>ระยะเวลา: ต.ค. ๖๘ - ก.ย. ๖๙ (ดำเนินการต่อเนื่อง)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td colspan="12"><div class="bar-span admin"></div></td>
+                </tr>
+                <tr>
+                    <td>บริหาร/ธุรการ (อากาศ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">บริหารโครงการ (ค่าจ้าง Staff/ผู้ประสานงาน)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: จ้างนักวิชาการสิ่งแวดล้อม (ผู้ประสานงานโครงการ) ๑ คน</li>
+                                <li>หมายเหตุ: เป็นค่าใช้จ่าย (Staff) ที่เกิดขึ้นรายเดือนตลอดโครงการ</li>
+                                <li>โครงการ: การเพิ่มประสิทธิภาพในการป้องกันและแก้ไขปัญหาฝุ่นละอองฯ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td colspan="12"><div class="bar-span admin"></div></td>
+                </tr>
+                
+                <tr>
+                    <td>น้ำ (ของเสีย)</td>
+                    <td class="task-cell">
+                        <span class="task-name">งานบริหารของเสียอันตราย</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ดำเนินงานตามงบดำเนินงาน</li>
+                                <li>โครงการ: Hazardous Waste Management</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (ควันดำ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">เตรียมการตรวจควันดำ</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: วางแผนการปฏิบัติงานร่วมกับตำรวจจราจร/ขนส่ง</li>
+                                <li>เทคนิค: วางแผนในการตรวจสอบและตรวจจับยานพาหนะ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">วางแผนและทบทวน อปท. เป้าหมาย</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>ทบทวนและจัดทำแผนการดำเนินงาน (โครงการ ๑ & ๒)</li>
+                                <li>ทบทวนรายชื่อ อปท. เป้าหมาย ๑๑ แห่ง (สะสม)</li>
+                                <li>เตรียมประสานการลงพื้นที่ติดตามตรวจสอบ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (ขยะอาหาร)</td>
+                    <td class="task-cell">
+                        <span class="task-name">เตรียมการจัดเก็บข้อมูลขยะอาหาร (Baseline)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: เตรียมการจัดเก็บข้อมูลปริมาณขยะอาหารภายในหน่วยงาน สคพ. ๑๑</li>
+                                <li>ข้อมูลพื้นฐาน (Baseline): ๑๙.๔ กิโลกรัม/เดือน (ปี ๒๕๖๘)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">จัดหาสารเคมีและสมัครทดสอบ</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>จัดหาสารเคมี/วัสดุ/อุปกรณ์ (๑ ครั้ง)</li>
+                                <li>สมัครเข้าร่วมทดสอบความชำนาญ (๗ กิจกรรม / ๑๖ ตัวอย่าง)</li>
+                                <li>โครงการ: โครงการพัฒนาคุณภาพแหล่งน้ำดิบ / งานพัฒนาระบบ Lab</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ซ่อมบำรุงเครื่องมือวิเคราะห์ (ครั้งที่ 1)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ซ่อมบำรุงเครื่องมือวิเคราะห์เสีย (๑ ครั้ง)</li>
+                                <li>โครงการ: งานพัฒนาระบบ Lab</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (บังคับใช้ กม.)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ตรวจสอบบังคับใช้กฎหมาย (น้ำ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ลงพื้นที่เพื่อตรวจสอบและบังคับใช้กฎหมายกับแหล่งกำเนิดมลพิษในพื้นที่เป้าหมาย</li>
+                                <li>โครงการ: Enforcement/Inspection</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (PM2.5)</td>
+                    <td class="task-cell">
+                        <span class="task-name">สำรวจ PM2.5 และประชุมเครือข่าย</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>การสำรวจ PM๒.๕: ลงพื้นที่/เก็บข้อมูล และประสานงาน (ข้อมูลอุตุนิยมวิทยา, ข้อมูลจุดความร้อน)</li>
+                                <li>การประชุมเครือข่าย: ประชุมชี้แจงกับหน่วยงาน/องค์กร/ชุมชน เพื่อวิเคราะห์ประเด็นปัญหา</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามตรวจสอบ (Site Inventory) (Q1)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ลงพื้นที่ตรวจสอบและติดตาม อปท. เป้าหมาย (รอบ Q๑)</li>
+                                <li>วิธีการ: ใช้คู่มือและแบบฟอร์ม (แบบ คพ. ๑) ในการประเมินสมรรถนะ</li>
+                                <li>ผลผลิต: บันทึกปัญหา (โครงสร้าง, บริหารจัดการ, สาธารณูปโภค) และถ่ายรูป</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>น้ำ (แหล่งน้ำดิบ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">สำรวจและจัดทำฐานข้อมูลน้ำดิบ/ประปา</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: สำรวจและจัดทำฐานข้อมูลคุณภาพน้ำดิบที่ใช้ผลิตน้ำประปา และคุณภาพน้ำประปาหมู่บ้าน</li>
+                                <li>เป้าหมาย: ๖๐ แห่ง</li>
+                                <li>โครงการ: โครงการพัฒนาคุณภาพแหล่งน้ำดิบ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (บังคับใช้ กม.)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ตรวจสอบบังคับใช้กฎหมาย (น้ำ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ดำเนินงานตามงบดำเนินงาน</li>
+                                <li>โครงการ: Enforcement/Inspection</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (ควันดำ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">วางแผนร่วมและฝึกอบรม (ควันดำ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>การวางแผนร่วม: จัดประชุมเชิงปฏิบัติการเพื่อหารือแนวทางการควบคุม ป้องกัน และแก้ไขปัญหา</li>
+                                <li>การเตรียมการตรวจควันดำ: จัดฝึกอบรมให้พนักงานเจ้าหน้าที่เพื่อเพิ่มขีดความสามารถ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">จัดทำข้อเสนอแนะและประชุมจังหวัด</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>วิเคราะห์ข้อมูล: จัดทำข้อเสนอการพัฒนา/ปรับปรุง (๖ แห่งแรก)</li>
+                                <li>กำหนดแนวทาง: แก้ไขปัญหาเร่งด่วน (ระยะสั้น) และระยะยาว</li>
+                                <li>ประชุม: ร่วมกับส่วนราชการระดับจังหวัด</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+                <tr>
+                    <td>น้ำ (แหล่งน้ำดิบ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">เก็บตัวอย่าง/วิเคราะห์ (รอบ ๑)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ตรวจวิเคราะห์คุณภาพน้ำดิบและน้ำประปาหมู่บ้าน (๔ จังหวัด)</li>
+                                <li>เป้าหมาย: ๔๘ แห่ง</li>
+                                <li>วิธีการ: เก็บตัวอย่าง วิเคราะห์ TCB, E.coli และพารามิเตอร์อื่นๆ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (แหล่งน้ำดิบ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ส่งวิเคราะห์ปรอท</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ส่งวิเคราะห์ปรอท หน่วยงานนอก/แล็บกลาง</li>
+                                <li>จำนวน: ๔๐ ตัวอย่าง</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (แหล่งน้ำดิบ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">สนับสนุนชุดทดสอบอย่างง่าย</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: สนับสนุนชุดทดสอบคุณภาพน้ำอย่างง่าย</li>
+                                <li>จำนวน: ชุดตรวจวัดค่า pH (๒๐ ชุด), คลอรีน (๒๐ ชุด)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (ผิวดิน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามตรวจสอบคุณภาพน้ำผิวดิน (นอ.)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: สนับสนุนงบประมาณ (OT/สารเคมี)</li>
+                                <li>โครงการ: Monitoring/Support (นอ.)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ซ่อมบำรุงเครื่องมือวิเคราะห์ (ครั้งที่ 2)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ซ่อมบำรุงเครื่องมือวิเคราะห์เสีย (๑ ครั้ง)</li>
+                                <li>โครงการ: Lab Development/บริหารโครงการ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (ควันดำ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">บังคับใช้ กม. (เข้มข้น) และสื่อสาร</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>บังคับใช้ กม.: เริ่มดำเนินการตรวจสอบ ตรวจจับ และห้ามใช้ยานพาหนะควันดำในพื้นที่วิกฤต</li>
+                                <li>เทคนิค: ตรวจวัดด้วยวิธีการเหยียบคันเร่ง (Accelerator depressing method)</li>
+                                <li>สื่อสาร: จัดเวทีวิชาการสร้างการรับรู้สถานการณ์ฝุ่นละออง</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">วิเคราะห์องค์ประกอบขยะ (ฤดูแล้ง)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: วางแผนและดำเนินงานวิเคราะห์องค์ประกอบขยะมูลฝอย (๑ แห่ง)</li>
+                                <li>วิธีการ: ฤดูแล้ง, สุ่มตัวอย่าง (๔๕๐ กก.) และแบ่งกอง (เหลือ ๑๐๐ กก.), วิเคราะห์ ๑๕ ประเภท</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (ขยะอาหาร)</td>
+                    <td class="task-cell">
+                        <span class="task-name">เริ่มเก็บข้อมูลขยะอาหาร (สคพ. ๑๑)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: เริ่มเก็บข้อมูลและชั่งน้ำหนักขยะอาหารภายในหน่วยงาน</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>น้ำ (ผิวดิน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">งานป้องกันและแก้ไขคุณภาพน้ำ</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ดำเนินงานตามแผนป้องกันและแก้ไขคุณภาพน้ำในแหล่งน้ำให้เป็นไปตามประเภทการใช้ประโยชน์</li>
+                                <li>โครงการ: Water Quality Prevention</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (การเผา)</td>
+                    <td class="task-cell">
+                        <span class="task-name">จัดการเศษวัสดุ (เกษตร)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: จัดฝึกอบรมพัฒนาศักยภาพเครือข่ายในการบริหารจัดการเศษวัสดุเหลือใช้ทางการเกษตร</li>
+                                <li>เป้าหมาย: ๑ เครือข่าย/สคพ.</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (แหล่งกำเนิด)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามแหล่งกำเนิดมลพิษอากาศ</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ดำเนินการติดตามตรวจสอบและจัดการปัญหามลพิษทางอากาศ</li>
+                                <li>แหล่งกำเนิด: โรงงานขนาดใหญ่, การเผาในพื้นที่โล่ง, ยานพาหนะขนส่ง</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (ขยะอาหาร)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ขับเคลื่อนเครือข่ายขยะอาหาร</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ขับเคลื่อนและสร้างเครือข่ายในการจัดการอาหารส่วนเกินและขยะอาหาร</li>
+                                <li>วิธีการ: ประสานงานผู้ประกอบการ (นำร่อง), ผู้จำหน่ายอาหาร, หน่วยงานรับบริจาค</li>
+                                <li>ให้ความรู้: "แนวปฏิบัติเพื่อความปลอดภัยอาหารสำหรับการบริจาค"</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>น้ำ (แหล่งน้ำดิบ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ประเมินผลคุณภาพน้ำ (รอบ ๑)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ประเมินคุณภาพน้ำประปา (๔๘ แห่ง) และคุณภาพน้ำดิบที่ผ่านเกณฑ์ 4 Cs (๑๐ แห่ง)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (ผิวดิน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามตรวจสอบคุณภาพน้ำผิวดิน (นอ.)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: สนับสนุนงบประมาณ (OT/สารเคมี)</li>
+                                <li>โครงการ: Monitoring/Support (นอ.)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (ควันดำ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">บังคับใช้ กม. (เด็ดขาด)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: เข้มงวดตรวจสอบ/ตรวจจับยานพาหนะควันดำ</li>
+                                <li>เทคนิค: ออกคำสั่ง "ห้ามใช้เด็ดขาด" (Absolute Prohibition) แทน "ห้ามใช้ชั่วคราว" (สำหรับรถที่ควันดำเกิน ๒๐%)</li>
+                                <li>ติดตามผล: ติดตามรถยนต์ที่ถูกสั่งห้ามใช้เด็ดขาด</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามผล อปท. (รอบ 50%)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ติดตามผลการดำเนินงาน อปท. เป้าหมาย ที่ได้รับคำแนะนำ (ร้อยละ ๕๐)</li>
+                                <li>วิธีการ: ติดตามการแก้ไขปัญหาด้านโครงสร้าง (ถนน, เครื่องจักร) และสาธารณูปโภค (ไฟฟ้า)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (ขยะอาหาร)</td>
+                    <td class="task-cell">
+                        <span class="task-name">คำนวณผลลดขยะอาหาร (Q2)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: คำนวณร้อยละการลดขยะอาหารภายใน สคพ. ๑๑ (รอบ ๓ เดือน: ม.ค. - มี.ค.)</li>
+                                <li>เป้าหมาย (Internal KPI Q2): ลดปริมาณขยะอาหารลงร้อยละ ๕</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">Lab Development (สอบเทียบ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: งานสอบเทียบเครื่องมือ/เครื่องแก้ว (๔๔ รายการ)</li>
+                                <li>โครงการ: งานพัฒนาระบบ Lab (ISO/IEC ๑๗๐๒๕)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ซ่อมบำรุงเครื่องมือวิเคราะห์ (ครั้งที่ 3)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ซ่อมบำรุงเครื่องมือวิเคราะห์เสีย (๑ ครั้ง)</li>
+                                <li>โครงการ: Lab Development/บริหารโครงการ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (PM2.5)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตาม/ประเมินผลมาตรการ</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ลงพื้นที่เพื่อติดตามประเมินผลตามแนวทาง/มาตรการควบคุมป้องกัน</li>
+                                <li>ให้คำปรึกษา: แนะนำแนวทางแก้ไข</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (ควันดำ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามควันดำ (แจ้งหนังสือ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: มีหนังสือแจ้งไปยังเจ้าของหรือผู้ครอบครองยานพาหนะที่ยังไม่ปรับปรุงแก้ไขรถยนต์ควันดำ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">ให้คำแนะนำ อปท. (ครบ ๑๑ แห่ง)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ดำเนินการให้คำแนะนำในการปรับปรุงสถานที่กำจัดขยะมูลฝอยแก่ อปท. เป้าหมาย (สะสมครบ ๑๑ แห่ง)</li>
+                                <li>วิเคราะห์: เริ่มวิเคราะห์ผลสำเร็จ ปัญหา อุปสรรค และแนวทางการแก้ไข</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>น้ำ (แหล่งน้ำดิบ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">เก็บตัวอย่าง/อบรม (รอบ ๒)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: เก็บตัวอย่าง (พื้นที่ไม่ผ่านเกณฑ์) และอบรมให้ความรู้ในการดูแลรักษา/ปรับปรุงคุณภาพน้ำ</li>
+                                <li>เป้าหมาย: ๑๐ แห่ง</li>
+                                <li>พารามิเตอร์: ๕ รายการ (BOD, TCB, FCB, ฟอสเฟต, แอมโมเนีย)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (ผิวดิน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามตรวจสอบคุณภาพน้ำผิวดิน (นอ.)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: เงินสนับสนุนสารเคมี</li>
+                                <li>โครงการ: Monitoring/Support (นอ.)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">Lab Development (สอบเทียบ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: งานสอบเทียบเครื่องมือ/เครื่องแก้ว (๔๔ รายการ)</li>
+                                <li>โครงการ: งานพัฒนาระบบ Lab (ISO/IEC ๑๗๐๒๕)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (PM2.5)</td>
+                    <td class="task-cell">
+                        <span class="task-name">รณรงค์และถอดบทเรียน</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>การรณรงค์: ดำเนินกิจกรรมรณรงค์เผยแพร่ประชาสัมพันธ์ลดหมอกควันและฝุ่นละออง</li>
+                                <li>การจัดการ: สรุปผลการดำเนินงาน/ถอดบทเรียนการแก้ไขปัญหา</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามผล อปท. (ต่อเนื่อง)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ติดตามผลการดำเนินงานปรับปรุงสถานที่กำจัดขยะมูลฝอย (๑๑ แห่ง) ต่อเนื่อง</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (ของเสียอันตราย)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ขับเคลื่อนการจัดการ WEEE</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ขับเคลื่อนการจัดการของเสียอันตราย/ซาก WEEE</li>
+                                <li>วิธีการ: ส่งเสริมการยกระดับสถานรวบรวมและถอดแยกของเสียอันตราย/WEEE ให้ถูกต้องตามหลักวิชาการ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">Lab Development (สอบเทียบ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: งานสอบเทียบเครื่องมือ/เครื่องแก้ว (๔๔ รายการ)</li>
+                                <li>โครงการ: งานพัฒนาระบบ Lab (ISO/IEC ๑๗๐๒๕)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (แหล่งกำเนิด)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามแหล่งกำเนิด (ต่อเนื่อง)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ดำเนินการติดตามตรวจสอบและจัดการปัญหามลพิษทางอากาศและเสียงจากแหล่งกำเนิด</li>
+                                <li>การเตรียมรายงาน: รวบรวมข้อมูลผลลัพธ์เพื่อเตรียมรายงานสรุปโครงการ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">วิเคราะห์องค์ประกอบขยะ (ฤดูฝน)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ดำเนินงานวิเคราะห์องค์ประกอบขยะมูลฝอย (อย่างน้อย ๑ แห่ง)</li>
+                                <li>เป้าหมาย: ได้ข้อมูลเพื่อเปรียบเทียบและหาค่าเฉลี่ยประจำปี</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (GHG)</td>
+                    <td class="task-cell">
+                        <span class="task-name">พัฒนาศักยภาพ (GHG)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: จัดกิจกรรมพัฒนาศักยภาพด้านการวิเคราะห์ปัจจัยที่มีอิทธิพลต่อการเกิดขยะมูลฝอยและการลดก๊าซเรือนกระจก (GHG)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+                <tr>
+                    <td>น้ำ (แหล่งน้ำดิบ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ประชุมขับเคลื่อนโครงการ (ร่วม สคพ.๑๓)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: จัดประชุมขับเคลื่อนการดำเนินงานร่วมกับ สคพ.๑๓ และหน่วยงานที่เกี่ยวข้อง</li>
+                                <li>เป้าหมาย: เพื่อให้เห็นผลสัมฤทธิ์แก่ประชาชน</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>น้ำ (ผิวดิน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามตรวจสอบคุณภาพน้ำผิวดิน (นอ.)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: สนับสนุนงบประมาณ (OT/สารเคมี)</li>
+                                <li>โครงการ: Monitoring/Support (นอ.)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (รายงาน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">รายงานสรุปผล (ภาคอีสาน)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>การรายงาน: จัดทำรายงานสรุปผลการดำเนินงานโครงการ ในพื้นที่ภาคตะวันออกเฉียงเหนือ</li>
+                                <li>การบริหาร: จัดทำเรื่องเบิกจ่ายงบบริหารโครงการ (ส่วนแรก)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย</td>
+                    <td class="task-cell">
+                        <span class="task-name">ติดตามผล อปท. (รอบ 100%)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: ติดตามการดำเนินงาน อปท. เป้าหมาย ที่ได้รับคำแนะนำ (ร้อยละ ๑๐๐)</li>
+                                <li>วิธีการ: รวบรวมข้อมูลทั้งหมด (โครงสร้าง, สาธารณูปโภค, การบริหารจัดการ) พร้อมรูปประกอบ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>น้ำ (ของเสีย)</td>
+                    <td class="task-cell">
+                        <span class="task-name">งานบริหารของเสียอันตราย</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ดำเนินงานตามงบดำเนินงาน</li>
+                                <li>โครงการ: Hazardous Waste Management</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar water"></div></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>อากาศ (รายงาน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ประเมินตัวชี้วัด (KPI)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>การประเมิน: รวบรวมข้อมูลเพื่อประเมินผลสำเร็จของโครงการตามตัวชี้วัด (เชิงปริมาณ/คุณภาพ)</li>
+                                <li>การรายงานผล: จัดทำรายงานผลการดำเนินงาน (โครงการตรวจสอบและบังคับใช้กฎหมายกับยานพาหนะ)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar air"></div></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (รายงาน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">วิเคราะห์ความสำเร็จและจัดทำร่างรายงาน</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>จัดทำ: "ผลการติดตาม วิเคราะห์ความสำเร็จ-ปัญหาอุปสรรค และแนวทางการแก้ไขอุปสรรคฯ" (สำหรับ ๑๑ แห่ง)</li>
+                                <li>จัดทำ: ร่างรายงานฉบับสมบูรณ์เสนอผู้บริหาร คพ.</li>
+                                <li>จัดทำ: รายงานสรุปข้อมูลองค์ประกอบขยะมูลฝอยประจำปี</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (ขยะอาหาร)</td>
+                    <td class="task-cell">
+                        <span class="task-name">คำนวณผลลดขยะอาหาร (รอบ ส.ค.)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: คำนวณร้อยละการลดขยะอาหารภายใน สคพ. ๑๑ (รอบ เม.ย. - ส.ค.)</li>
+                                <li>หมายเหตุ: เพื่อใช้ในการประเมินผลภายใน คพ.</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                    <td></td>
+                </tr>
+                
+                <tr>
+                    <td>ห้องปฏิบัติการ (Lab)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ส่งกำจัดสารเคมีที่ใช้แล้ว</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>รายละเอียด: ส่งกำจัดสารเคมีที่ใช้แล้ว (๑ ครั้ง)</li>
+                                <li>โครงการ: งานพัฒนาระบบ Lab</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar lab"></div></td>
+                </tr>
+                <tr>
+                    <td>บริหาร/ธุรการ (อากาศ)</td>
+                    <td class="task-cell">
+                        <span class="task-name">ปิดโครงการและจัดทำแผนปี ๗๐</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>จัดทำงบประมาณ: จัดทำกรอบงบประมาณรายจ่ายล่วงหน้าสำหรับปี พ.ศ. ๒๕๗๐</li>
+                                <li>บริหารโครงการ: เบิกจ่ายงบบริหารโครงการ (ส่วนที่เหลือ) และงบบริหารโครงการรณรงค์</li>
+                                <li>การปิดจ้าง: สิ้นสุดสัญญาผู้ประสานงานโครงการ</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar admin"></div></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (รายงาน)</td>
+                    <td class="task-cell">
+                        <span class="task-name">นำเสนอและปิดโครงการ (ขยะ)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>นำเสนอ: สรุปปัญหาและแนวทางการแก้ไข เสนอผู้บริหาร คพ.</li>
+                                <li>ส่งรายงาน: ส่งรายงานการบริหารจัดการและมลพิษด้านขยะมูลฝอยในพื้นที่เป้าหมายระดับจังหวัดให้ กจส.</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                </tr>
+                <tr>
+                    <td>ขยะมูลฝอย (ขยะอาหาร)</td>
+                    <td class="task-cell">
+                        <span class="task-name">คำนวณผลลดขยะอาหาร (สรุปปี)</span>
+                        <div class="tooltip">
+                            <ul>
+                                <li>กิจกรรม: คำนวณร้อยละการลดขยะอาหารสำหรับรอบ ๑๒ เดือน (ต.ค. ๖๘ - ก.ย. ๖๙)</li>
+                                <li>เป้าหมาย (Internal KPI Year End): ลดปริมาณขยะอาหารลงร้อยละ ๑๐</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div class="bar waste"></div></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
